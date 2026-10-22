@@ -285,430 +285,519 @@ a {
 
 
 /* ----------------------------------------------------------------
-   SECTION 6: HEADER
-   Fixed at the top — uses backdrop-filter blur for the frosted
-   glass effect. z-index 100 keeps it above all page content.
+   SECTION 6: HEADER (STUDIO AESTHETIC)
+   Fixed at the top — Brand Monogram | Floating Dark Pill Nav | CTA
 ---------------------------------------------------------------- */
 .site-header {
-  position:    fixed;
-  top:         0;
-  left:        0;
-  right:       0;
-  height:      var(--header-height);
-  z-index:     100;
-  border-bottom: 1px solid var(--border-light);
-  /* Frosted glass: blurs content scrolling behind it */
-  backdrop-filter:         blur(12px) saturate(160%);
-  -webkit-backdrop-filter: blur(12px) saturate(160%);
-  background-color:        rgba(242, 241, 236, 0.85);
-  /* No background-color/border-color in transition — GPU rule ✅
-     The backdrop-filter blur already creates the visual glassmorphism.
-     Only opacity is transitioned (for skip-link, wordmark, etc.) */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  z-index: 100;
+  background-color: transparent;
+  transition: transform var(--transition-base), opacity var(--transition-base);
 }
 
-/* Inner flex row: wordmark | nav | cta | toggle */
 .header-inner {
-  height:          100%;
-  display:         flex;
-  align-items:     center;
-  justify-content: space-between;
-  gap:             var(--space-6);
-}
-
-/* Wordmark */
-.header-wordmark {
-  font-family:    var(--font-mono);
-  font-size:      var(--text-sm);
-  font-weight:    700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color:          var(--text-primary);
-  white-space:    nowrap;
-  flex-shrink:    0;
-  transition:     opacity var(--transition-fast);
-}
-.header-wordmark:hover { opacity: 0.6; }
-
-/* Desktop nav list */
-.header-nav ul {
-  display:     flex;
+  height: 100%;
+  display: flex;
   align-items: center;
-  gap:         var(--space-6);
+  justify-content: space-between;
+  gap: var(--space-4);
 }
-/* Nav links — opacity transition instead of color transition
-   The link is always --text-primary color, but dimmed to 0.45 opacity
-   to appear "muted". On hover it reaches full opacity.
-   This achieves the exact same visual effect using ONLY opacity ✅ */
-.header-nav a {
-  font-family:    var(--font-mono);
-  font-size:      var(--text-xs);
-  font-weight:    500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color:          var(--text-primary);  /* always primary, opacity dims it */
-  opacity:        0.45;
-  position:       relative;
-  transition:     opacity var(--transition-fast); /* opacity only ✅ */
-}
-/* Underline-slide hover effect using ::after pseudo-element.
-   transform: scaleX() scales from 0→1 on hover. GPU composited ✅ */
-.header-nav a::after {
-  content:        '';
-  position:       absolute;
-  bottom:         -2px;
-  left:           0;
-  width:          100%;
-  height:         1px;
-  background:     var(--text-primary);
-  transform:      scaleX(0);
-  transform-origin: left center;
-  transition:     transform var(--transition-fast); /* transform only ✅ */
-}
-.header-nav a:hover        { opacity: 1; }
-.header-nav a:hover::after { transform: scaleX(1); }
 
-/* Header CTA */
-.header-cta {
+/* Brand Badge & Name */
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.brand-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  color: #111111;
+  font-weight: 800;
+  font-size: var(--text-base);
+  border-radius: 8px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.brand-name {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: #F5F5F3;
+  letter-spacing: -0.01em;
+}
+
+/* Center: Floating Dark Pill Navbar */
+.header-pill-nav {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  padding: 0.5rem 1.5rem;
+  background: rgba(20, 20, 20, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.header-pill-nav ul {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.header-pill-nav a {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: rgba(245, 245, 243, 0.7);
+  text-decoration: none;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+.header-pill-nav a:hover,
+.header-pill-nav a:focus-visible {
+  color: #FFFFFF;
+  opacity: 1;
+}
+
+/* Right Actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   flex-shrink: 0;
 }
 
-/* ---- Hamburger Toggle (hidden on desktop) ---- */
+.availability-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.green-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #00FF66;
+  box-shadow: 0 0 8px #00FF66;
+  animation: status-pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+  margin-right: 6px;
+}
+
+@keyframes status-pulse {
+  0%, 100% { opacity: 1;   transform: scale(1);    }
+  50%       { opacity: 0.4; transform: scale(0.85); }
+}
+
+.header-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--accent);
+  color: #111111;
+  font-weight: 700;
+  font-size: var(--text-xs);
+  border-radius: 10px;
+  padding: 0.45rem 0.85rem;
+  text-decoration: none;
+  transition: transform var(--transition-fast);
+}
+.header-cta-btn:hover,
+.header-cta-btn:focus-visible {
+  transform: translateY(-1px);
+}
+.header-cta-btn:active {
+  transform: translateY(0);
+}
+.arrow-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: #111111;
+  color: var(--accent);
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Hamburger toggle for mobile */
 .nav-toggle {
-  display:         none;
-  flex-direction:  column;
-  gap:             5px;
-  padding:         var(--space-2);
-  flex-shrink:     0;
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: var(--space-2);
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 .hamburger-line {
-  display:          block;
-  width:            22px;
-  height:           2px;
-  background-color: var(--text-primary);
-  border-radius:    var(--radius-full);
-  transition:       transform var(--transition-base),
-                    opacity   var(--transition-base);
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: #F5F5F3;
+  border-radius: var(--radius-full);
+  transition: transform var(--transition-base), opacity var(--transition-base);
 }
-/* Animate hamburger → X when open */
 .nav-toggle[aria-expanded="true"] .hamburger-line:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
 .nav-toggle[aria-expanded="true"] .hamburger-line:nth-child(2) {
-  opacity:   0;
+  opacity: 0;
   transform: scaleX(0);
 }
 .nav-toggle[aria-expanded="true"] .hamburger-line:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-/* ---- Mobile Navigation Drawer ---- */
+/* Mobile Nav Drawer */
 .mobile-nav {
-  position:         absolute;
-  top:              var(--header-height);
-  left:             0;
-  right:            0;
-  background-color: var(--bg-light);
-  border-bottom:    1px solid var(--border-light);
-  padding:          var(--space-6) var(--container-pad);
-  /* Hidden by default: shift off screen via transform (not display:none)
-     so the transition can animate smoothly */
-  transform:        translateY(-110%);
-  opacity:          0;
-  pointer-events:   none;
-  transition:       transform var(--transition-slow),
-                    opacity   var(--transition-base);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: rgba(18, 17, 16, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: var(--space-6) var(--container-pad);
+  transform: translateY(-110%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform var(--transition-slow), opacity var(--transition-base);
 }
 .mobile-nav.is-open {
-  transform:      translateY(0);
-  opacity:        1;
+  transform: translateY(0);
+  opacity: 1;
   pointer-events: auto;
 }
 .mobile-nav ul {
-  display:        flex;
+  display: flex;
   flex-direction: column;
-  gap:            var(--space-4);
+  gap: var(--space-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
-/* Mobile nav links — same opacity strategy as header nav ✅ */
 .mobile-nav a {
-  font-family:    var(--font-mono);
-  font-size:      var(--text-sm);
-  font-weight:    500;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color:          var(--text-primary);
-  opacity:        0.45;                        /* appears muted */
-  display:        block;
-  padding:        var(--space-2) 0;
-  border-bottom:  1px solid var(--border-light);
-  transition:     opacity var(--transition-fast); /* opacity only ✅ */
+  color: #F5F5F3;
+  opacity: 0.7;
+  display: block;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: opacity var(--transition-fast);
 }
-.mobile-nav a:hover { opacity: 1; }
-/* Fix: #CC3D00 achieves WCAG AA contrast ≈5.1:1 on #F2F1EC (per Layout audit) */
+.mobile-nav a:hover,
+.mobile-nav a:focus-visible {
+  opacity: 1;
+  color: #FFFFFF;
+}
 .mobile-cta {
-  color:        #CC3D00 !important;
-  border-color: #CC3D00 !important;
-  opacity:      1       !important;  /* always full — it's a CTA */
+  color: var(--accent) !important;
+  opacity: 1 !important;
 }
 
 
 /* ----------------------------------------------------------------
-   SECTION 7: HERO SECTION (#about)
-   12-column CSS Grid layout:
-   - Mobile  (<768px):  single column, stacked
-   - Tablet  (768px+):  two columns, left 38% / right 62%
-   - Desktop (1024px+): true 12-col grid, left=cols 1-4, right=cols 5-12
+   SECTION 7: HERO / ABOUT (#about) — DARK STUDIO AESTHETIC
+   Upper 3-Zone Grid + Giant Full-Width Backdrop Typography
 ---------------------------------------------------------------- */
-
-/* Push content below the fixed header */
-.hero-section {
-  padding-top: calc(var(--header-height) + var(--space-20));
-  min-height:  100svh;   /* svh = "small viewport height" — safe on mobile */
-  display:     flex;
-  align-items: center;
-}
-
-/* 12-column grid container */
-.hero-grid {
-  display:               grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap:                   var(--space-8);
-  align-items:           center;
-  width:                 100%;
-}
-
-/* Left rail: columns 1–4 */
-.hero-left {
-  grid-column:    1 / 5;
-  display:        flex;
+.hero-studio-section {
+  position: relative;
+  min-height: 100svh;
+  background: radial-gradient(circle at 50% 35%, #2A2421 0%, #121110 55%, #0B0B0B 100%);
+  color: #F5F5F3;
+  overflow: hidden;
+  display: flex;
   flex-direction: column;
-  gap:            var(--space-6);
-  position:       relative;
+  justify-content: space-between;
+  padding-top: calc(var(--header-height) + var(--space-6));
+  padding-bottom: var(--space-6);
 }
 
-/* Right area: columns 5–12 */
-.hero-right {
-  grid-column: 5 / -1;
-  position:    relative;
+.hero-studio-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
 }
 
-/* ---- Status Tag ---- */
-.hero-tag {
-  display:        inline-flex;
-  align-items:    center;
-  gap:            var(--space-3);
-  font-size:      var(--text-xs);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color:          var(--text-muted);
-  padding:        var(--space-2) var(--space-4);
-  border:         1px solid var(--border-light);
-  border-radius:  var(--radius-full);
-  width:          fit-content;
+/* 3-Zone Upper Grid */
+.hero-upper-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-6);
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  padding: var(--space-4) 0;
 }
 
-/* Pulsing status dot — Signal Orange */
-.status-dot {
-  width:            8px;
-  height:           8px;
-  border-radius:    50%;
-  background-color: var(--accent);
-  flex-shrink:      0;
-  /* Pulse animation: only opacity + transform — GPU safe */
-  animation: status-pulse 2s ease-in-out infinite;
-}
-@keyframes status-pulse {
-  0%, 100% { opacity: 1;   transform: scale(1);    }
-  50%       { opacity: 0.4; transform: scale(0.85); }
+/* Zone 1: Left Column (Cols 1–4) */
+.hero-col-left {
+  grid-column: 1 / 5;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  z-index: 3;
 }
 
-/* ---- Hero Bio ---- */
-.hero-bio {
-  font-size:   var(--text-lg);
-  line-height: 1.65;
-  color:       var(--text-muted);
-  max-width:   34ch; /* ~34 characters wide — optimal for reading */
+.hero-left-heading {
+  font-size: clamp(2rem, 3.2vw, 3.25rem);
+  font-weight: 700;
+  color: #F5F5F3;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
 }
 
-/* ---- Hero CTA ---- */
-.hero-cta { align-self: flex-start; }
-
-/* ---- Floating Achievement Badges ---- */
-.badge {
-  display:       inline-flex;
-  align-items:   center;
-  gap:           var(--space-3);
-  padding:       var(--space-3) var(--space-4);
-  background:    #ffffff;
-  border:        1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  box-shadow:    0 4px 24px rgba(0, 0, 0, 0.06),
-                 0 1px 4px  rgba(0, 0, 0, 0.04);
-  width:         fit-content;
-}
-.badge--msme {
-  /* sits inside hero-left, positioned naturally in flow */
-  margin-top:  var(--space-4);
-  will-change: transform;
-}
-.badge--floating {
-  /* Floats over the hero-frame on desktop */
-  position:    absolute;
-  bottom:      var(--space-6);
-  left:        50%;
-  transform:   translate3d(-50%, var(--parallax-y, 0px), 0);
-  /* Float bob animation: transform only */
-  animation:   badge-float 4s ease-in-out infinite;
-  z-index:     2;
-  will-change: transform;
-}
-@keyframes badge-float {
-  0%, 100% { transform: translate3d(-50%, var(--parallax-y, 0px), 0);     }
-  50%       { transform: translate3d(-50%, calc(var(--parallax-y, 0px) - 6px), 0);  }
+.hero-left-bio {
+  font-size: var(--text-base);
+  color: rgba(245, 245, 243, 0.75);
+  line-height: 1.6;
+  max-width: 36ch;
 }
 
-.badge-icon {
-  font-size: var(--text-lg);
+.hero-cta-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-top: var(--space-2);
+}
+
+.hero-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--accent);
+  color: #111111;
+  font-weight: 700;
+  font-size: var(--text-sm);
+  border-radius: 10px;
+  padding: 0.75rem 1.25rem;
+  text-decoration: none;
+  transition: transform var(--transition-fast);
+}
+.hero-btn-primary:hover,
+.hero-btn-primary:focus-visible {
+  transform: translateY(-2px);
+}
+.hero-btn-primary:active {
+  transform: translateY(0);
+}
+
+.hero-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #F5F5F3;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  border-radius: 10px;
+  padding: 0.75rem 1.25rem;
+  text-decoration: none;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+.hero-btn-secondary:hover,
+.hero-btn-secondary:focus-visible {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.08);
+}
+.hero-btn-secondary:active {
+  transform: translateY(0);
+}
+
+.btn-arrow-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: #111111;
+  color: var(--accent);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
   line-height: 1;
 }
-.badge-text {
-  display:        flex;
-  flex-direction: column;
-  gap:            2px;
-}
-.badge-title {
-  font-size:   var(--text-sm);
-  font-weight: 700;
-  color:       var(--text-primary);
-  line-height: 1.2;
-}
-.badge-sub {
-  font-size:   var(--text-xs);
-  color:       var(--text-muted);
-  line-height: 1.2;
+.hero-btn-secondary .btn-arrow-box {
+  background: rgba(255, 255, 255, 0.12);
+  color: #F5F5F3;
 }
 
-/* ---- Hero Headline ---- */
-.hero-headline {
-  font-size:      var(--text-hero);
-  font-weight:    800;
-  line-height:    0.92;
-  letter-spacing: -0.03em;
-  color:          var(--text-primary);
-  margin-bottom:  var(--space-8);
-}
-.headline-line {
-  display: block;
-}
-/* Italic style on middle line for visual rhythm */
-.headline-line--2 {
-  font-style: italic;
-  color:      var(--text-muted);
-}
-.accent-dot {
-  color: var(--accent);
-}
-
-/* ---- Hero Frame (visual showcase) ---- */
-.hero-frame {
-  position:         relative;
-  width:            100%;
-  aspect-ratio:     4 / 3;   /* maintains shape on all screen sizes */
-  border:           1px solid var(--border-light);
-  border-radius:    var(--radius-lg);
-  background-color: #F9F8F4;
-  overflow:         hidden;
-  display:          flex;
-  align-items:      center;
-  justify-content:  center;
-  will-change:      transform;
-}
-
-/* Monogram centering */
-.hero-monogram {
+/* Zone 2: Center Portrait (Cols 5–8) */
+.hero-col-center {
+  grid-column: 5 / 9;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
   position: relative;
-  z-index:  1;
+  z-index: 2;
 }
 
-/* Decorative hairline grid lines inside the frame */
-.frame-grid-lines { position: absolute; inset: 0; pointer-events: none; }
-.grid-line {
-  position:   absolute;
-  background: var(--border-light);
+.hero-portrait-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  will-change: transform;
 }
-.grid-line--h {
-  top:    50%;
-  left:   0;
-  right:  0;
-  height: 1px;
-  transform: translateY(-50%);
+
+.hero-portrait-img {
+  width: 100%;
+  max-height: 78vh;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 1px rgba(255, 255, 255, 0.15);
+  display: block;
+  z-index: 2;
 }
-.grid-line--v {
-  left:   50%;
-  top:    0;
-  bottom: 0;
-  width:  1px;
-  transform: translateX(-50%);
+
+/* Zone 3: Right Status Column (Cols 9–12) */
+.hero-col-right {
+  grid-column: 9 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: rgba(245, 245, 243, 0.7);
+  line-height: 1.5;
+  z-index: 3;
+}
+.hero-status-line {
+  color: #F5F5F3;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+}
+.hero-location-line {
+  color: rgba(245, 245, 243, 0.6);
+}
+.hero-focus-line {
+  color: rgba(245, 245, 243, 0.8);
+  font-weight: 500;
+}
+
+/* Giant Full-Width Backdrop Typography */
+.hero-backdrop-wrap {
+  width: 100%;
+  margin-top: auto;
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.hero-giant-backdrop {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+  font-size: clamp(3.2rem, 10.5vw, 10.5rem);
+  color: rgba(245, 245, 243, 0.42);
+  text-align: center;
+  width: 100%;
+  margin: 0;
+  white-space: nowrap;
+  will-change: transform;
 }
 
 
 /* ----------------------------------------------------------------
-   SECTION 8: RESPONSIVE BREAKPOINTS (Mobile-First)
-   We write mobile styles first (above), then use min-width
-   media queries to progressively enhance for larger screens.
+   SECTION 8: RESPONSIVE BREAKPOINTS (Header & Hero)
 ---------------------------------------------------------------- */
 
-/* --- MOBILE: < 768px --- (already the default above) --- */
+/* --- MOBILE: < 768px --- */
 @media (max-width: 767.98px) {
-  /* Show hamburger, hide desktop nav and CTA */
-  .nav-toggle   { display: flex; }
-  .header-nav   { display: none; }
-  .header-cta   { display: none; }
+  .nav-toggle         { display: flex; }
+  .header-pill-nav    { display: none; }
+  .availability-pill  { display: none; }
 
-  /* Hero: single column */
-  .hero-grid {
-    grid-template-columns: 1fr;
-    gap:                   var(--space-10);
+  .hero-studio-section {
+    padding-top: calc(var(--header-height) + var(--space-4));
+    padding-bottom: var(--space-8);
   }
-  .hero-left,
-  .hero-right { grid-column: 1 / -1; }
 
-  .hero-headline { margin-bottom: var(--space-6); }
-
-  /* Badges stack naturally in flow on mobile */
-  .badge--floating {
-    position:  static;
-    transform: none;
-    animation: none;
-    margin-top: var(--space-4);
-    align-self: flex-start;
+  .hero-upper-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    padding: var(--space-2) 0;
+  }
+  .hero-col-left,
+  .hero-col-center,
+  .hero-col-right {
+    grid-column: 1 / -1;
+  }
+  .hero-col-right {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .hero-portrait-img {
+    max-height: 55vh;
+  }
+  .hero-giant-backdrop {
+    white-space: normal;
+    font-size: clamp(2.4rem, 11vw, 4.2rem);
+    line-height: 0.95;
   }
 }
 
 /* --- TABLET: 768px – 1023px --- */
 @media (min-width: 768px) and (max-width: 1023.98px) {
-  /* Show desktop nav, hide toggle */
-  .nav-toggle { display: none; }
-  .header-nav { display: block; }
-  .header-cta { display: inline-flex; }
+  .nav-toggle         { display: none; }
+  .header-pill-nav    { display: flex; padding: 0.4rem 1rem; }
+  .header-pill-nav ul { gap: var(--space-3); }
 
-  /* Simplify nav gap on tablet */
-  .header-nav ul { gap: var(--space-4); }
-
-  /* Hero: two columns */
-  .hero-grid {
-    grid-template-columns: 2fr 3fr;
+  .hero-upper-grid {
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-4);
   }
-  .hero-left  { grid-column: 1 / 2; }
-  .hero-right { grid-column: 2 / 3; }
+  .hero-col-left   { grid-column: 1 / 6; }
+  .hero-col-center { grid-column: 6 / 10; }
+  .hero-col-right  { grid-column: 10 / -1; font-size: 11px; }
+
+  .hero-portrait-img {
+    max-height: 65vh;
+  }
+  .hero-giant-backdrop {
+    font-size: clamp(2.8rem, 9vw, 6rem);
+  }
 }
 
 /* --- DESKTOP: 1024px+ --- */
 @media (min-width: 1024px) {
-  .nav-toggle { display: none; }
-  .header-nav { display: block; }
-  .header-cta { display: inline-flex; }
-
-  /* Full 12-column grid (defined in .hero-grid above) */
+  .nav-toggle      { display: none; }
+  .header-pill-nav { display: flex; }
 }
 
 
@@ -729,8 +818,8 @@ a {
   }
 
   /* Reveal all animated/hidden content immediately */
-  .badge--floating { animation: none; transform: translateX(-50%); }
-  .status-dot      { animation: none; }
+  .green-dot,
+  .status-dot { animation: none; }
 
   /* Toolkit cells: show immediately without entry animation */
   .toolkit-cell { opacity: 1; transform: none; }
@@ -745,9 +834,6 @@ a {
 
   /* Modal dialog: no scaling animation */
   .cert-modal-card { transform: none !important; }
-
-  /* Clock pulse: steady indicator */
-  .clock-pulse { animation: none; }
 }
 
 
@@ -2074,7 +2160,7 @@ a {
 
 /* ================================================================
    SECTION 22: CONTACT & FOOTER (#contact & <footer>)
-   Dark theme CTA + Dual-Stage Footer + Grid Blueprint
+   Dark theme CTA + Site Footer
 ================================================================ */
 
 .contact-section {
@@ -2232,34 +2318,6 @@ a {
   font-weight:    700;
 }
 
-/* Clock Telemetry */
-.clock-display {
-  display:     inline-flex;
-  align-items: center;
-  gap:         var(--space-3);
-}
-
-.clock-pulse {
-  width:            8px;
-  height:           8px;
-  border-radius:    50%;
-  background-color: #00FF66; /* Telemetry active green */
-  flex-shrink:      0;
-  animation:        clock-blink 2s ease-in-out infinite;
-}
-
-@keyframes clock-blink {
-  0%, 100% { opacity: 1;   transform: scale(1);   }
-  50%       { opacity: 0.3; transform: scale(0.8); }
-}
-
-.clock-time {
-  font-size:   var(--text-sm);
-  font-weight: 700;
-  color:       var(--text-dark-primary);
-  letter-spacing: 0.05em;
-}
-
 .footer-location {
   font-size:   var(--text-xs);
   color:       var(--text-dark-muted);
@@ -2331,106 +2389,15 @@ a {
   padding-top: var(--space-2);
 }
 
-/* Lower Stage: Light Strip for Grid Blueprint */
-.footer-lower {
-  background-color: var(--bg-light);
-  border-top:       1px solid var(--border-light);
-  padding:          var(--space-4) 0;
-}
-
-.blueprint-strip-btn {
-  width:           100%;
-  display:         flex;
-  align-items:     center;
-  justify-content: center;
-  gap:             var(--space-3);
-  padding:         var(--space-2) var(--space-4);
-  font-size:       var(--text-xs);
-  letter-spacing:  0.08em;
-  color:           var(--text-primary);
-  cursor:          pointer;
-  transition:      opacity var(--transition-fast);
-}
-.blueprint-strip-btn:hover {
-  opacity: 0.75;
-}
-
-.blueprint-dot {
-  width:            8px;
-  height:           8px;
-  border-radius:    50%;
-  background-color: var(--accent);
-}
-
-.blueprint-state {
-  color: var(--text-muted);
-}
 
 /* ================================================================
-   SECTION 24: 12-COLUMN GRID BLUEPRINT OVERLAY
-================================================================ */
-
-.grid-blueprint {
-  position:        fixed;
-  inset:           0;
-  z-index:         9998;
-  pointer-events:  none;
-  opacity:         0;
-  visibility:      hidden;
-  transition:      opacity var(--transition-base);
-}
-
-.grid-blueprint.is-visible {
-  opacity:    1;
-  visibility: visible;
-}
-
-.blueprint-grid-container {
-  height:                100%;
-  display:               grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap:                   var(--space-8);
-}
-
-.blueprint-col {
-  height:           100%;
-  background-color: rgba(255, 77, 0, 0.035);
-  border-left:      1px dashed rgba(255, 77, 0, 0.3);
-  border-right:     1px dashed rgba(255, 77, 0, 0.3);
-  display:          flex;
-  flex-direction:   column;
-  justify-content:  space-between;
-  padding:          var(--space-4) var(--space-1);
-}
-
-.blueprint-col span {
-  font-family:    var(--font-mono);
-  font-size:      9px;
-  color:          var(--accent);
-  opacity:        0.6;
-  text-align:     center;
-  writing-mode:   vertical-rl;
-  letter-spacing: 0.1em;
-}
-
-
-/* ================================================================
-   SECTION 25: RESPONSIVE BREAKPOINTS (Footer & Blueprint)
+   SECTION 24: RESPONSIVE BREAKPOINTS (Footer)
 ================================================================ */
 
 @media (max-width: 767.98px) {
   .footer-upper-inner {
     grid-template-columns: 1fr;
     gap:                   var(--space-8);
-  }
-
-  .blueprint-grid-container {
-    grid-template-columns: 1fr;
-    gap:                   var(--space-4);
-  }
-
-  .blueprint-col:nth-child(n+2) {
-    display: none; /* Show 1 active column guide on mobile */
   }
 
   .contact-row-label {

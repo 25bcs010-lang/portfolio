@@ -45,55 +45,61 @@
 
   <!-- ============================================================
        HEADER — Fixed top navigation bar
-       Role: Site-wide landmark, keyboard-accessible anchor nav
+       Studio aesthetic: Monogram Badge | Floating Pill Nav | Availability CTA
   ============================================================ -->
-  <header class="site-header" role="banner">
+  <header class="site-header site-header--studio" role="banner">
     <div class="header-inner container">
 
-      <!-- Wordmark / Home anchor -->
-      <a href="#about" class="header-wordmark" aria-label="Ashvanth P S — back to top">
-        ASHVANTH P S
+      <!-- Left: Monogram Badge + Name -->
+      <a href="#about" class="header-brand" aria-label="Ashvanth P S — back to top">
+        <span class="brand-badge font-mono" aria-hidden="true">A</span>
+        <span class="brand-name">Ashvanth P S</span>
       </a>
 
-      <!-- Primary Navigation -->
-      <nav class="header-nav" aria-label="Primary navigation">
+      <!-- Center: Floating Dark Pill Navbar -->
+      <nav class="header-pill-nav" aria-label="Primary navigation">
         <ul role="list">
+          <li><a href="#projects">Projects</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#toolkit">Toolkit</a></li>
-          <li><a href="#projects">Projects</a></li>
           <li><a href="#skills">Skills</a></li>
-          <li><a href="#process">Process</a></li>
           <li><a href="#achievements">Achievements</a></li>
+          <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
 
-      <!-- CTA Button -->
-      <a href="#contact" class="header-cta btn-primary" aria-label="Contact Ashvanth">
-        Contact Me ↗
-      </a>
+      <!-- Right: Availability Dot + Orange Contact Button + Mobile Toggle -->
+      <div class="header-actions">
+        <span class="availability-pill font-mono" aria-label="Status: Available for Projects &amp; Internships">
+          <span class="green-dot" aria-hidden="true"></span>
+        </span>
+        <a href="#contact" class="header-cta-btn" aria-label="Contact Ashvanth">
+          <span>Contact Me</span>
+          <span class="arrow-box" aria-hidden="true">↗</span>
+        </a>
 
-      <!-- Hamburger toggle (mobile only) -->
-      <button
-        class="nav-toggle"
-        aria-label="Open navigation menu"
-        aria-expanded="false"
-        aria-controls="mobile-nav"
-      >
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-      </button>
+        <!-- Hamburger toggle (mobile only) -->
+        <button
+          class="nav-toggle"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+        >
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
 
-    </div>
+    </div><!-- /header-inner -->
 
     <!-- Mobile navigation drawer -->
     <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation" aria-hidden="true">
       <ul role="list">
+        <li><a href="#projects">Projects</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#toolkit">Toolkit</a></li>
-        <li><a href="#projects">Projects</a></li>
         <li><a href="#skills">Skills</a></li>
-        <li><a href="#process">Process</a></li>
         <li><a href="#achievements">Achievements</a></li>
         <li><a href="#contact" class="mobile-cta">Contact Me ↗</a></li>
       </ul>
@@ -106,105 +112,68 @@
   <main id="main-content">
 
     <!-- ==========================================================
-         SECTION 1 — HERO / ABOUT  (#about)
-         Role: First impression — asymmetric split layout
-         Light theme section
+         SECTION 1 — HERO / ABOUT (#about)
+         Dark Studio Aesthetic | 3-Zone Upper Layout | Giant Backdrop Typography
     ========================================================== -->
-    <section id="about" class="section section--light hero-section" aria-labelledby="hero-heading">
-      <div class="container hero-grid">
+    <section id="about" class="hero-studio-section" aria-labelledby="hero-heading">
+      <div class="container hero-studio-container">
 
-        <!-- LEFT RAIL (cols 1–4 on desktop) -->
-        <div class="hero-left rail">
+        <!-- UPPER 3-ZONE GRID (Cols 1–4, 5–8, 9–12 on desktop) -->
+        <div class="hero-upper-grid">
 
-          <!-- Status dot + role tag -->
-          <div class="hero-tag" aria-label="Status: Open to opportunities">
-            <span class="status-dot" aria-hidden="true"></span>
-            <span class="font-mono">College Student • AI &amp; ML Builder</span>
-          </div>
-
-          <!-- Short bio intro -->
-          <p class="hero-bio">
-            I build intelligent systems — fine-tuning AI agents locally,
-            designing GPU compute workflows, and shipping full products
-            through structured reasoning.
-          </p>
-
-          <!-- CTA -->
-          <a href="#projects" class="btn-secondary hero-cta" aria-label="Explore Ashvanth's work">
-            Explore Work ↓
-          </a>
-
-          <!-- Floating badge: MSME Hackathon -->
-          <div class="badge badge--msme" role="note" aria-label="Achievement: MSME Hackathon Finalist">
-            <span class="badge-icon" aria-hidden="true">🏆</span>
-            <div class="badge-text">
-              <span class="badge-title">MSME Hackathon</span>
-              <span class="badge-sub font-mono">Final Round</span>
+          <!-- ZONE 1: Left Column (Cols 1–4) -->
+          <div class="hero-col-left">
+            <h2 class="hero-left-heading">
+              AI/ML Engineer &amp; Full-Stack Builder
+            </h2>
+            <p class="hero-left-bio">
+              I design and engineer intelligent systems—from local LLM agents and IoT telemetry to full-stack platforms—from first-principles logic to shipped release.
+            </p>
+            <div class="hero-cta-group">
+              <a href="#projects" class="hero-btn-primary" aria-label="See my work">
+                <span>See my work</span>
+                <span class="btn-arrow-box" aria-hidden="true">↗</span>
+              </a>
+              <a href="#skills" class="hero-btn-secondary" aria-label="Explore capabilities">
+                <span>Explore capabilities</span>
+                <span class="btn-arrow-box" aria-hidden="true">↗</span>
+              </a>
             </div>
-          </div>
+          </div><!-- /hero-col-left -->
 
-        </div><!-- /hero-left -->
+          <!-- ZONE 2: Center Portrait Column (Cols 5–8) -->
+          <div class="hero-col-center">
+            <div class="hero-portrait-wrapper">
+              <img
+                src="images/profile.jpg"
+                alt="Portrait photograph of Ashvanth P S"
+                class="hero-portrait-img"
+                width="800"
+                height="1000"
+                fetchpriority="high"
+              />
+            </div>
+          </div><!-- /hero-col-center -->
 
-        <!-- RIGHT MAIN (cols 5–12 on desktop) -->
-        <div class="hero-right">
+          <!-- ZONE 3: Right Status Column (Cols 9–12, Monospace Metadata) -->
+          <div class="hero-col-right font-mono">
+            <p class="hero-status-line">
+              <span class="green-dot" aria-hidden="true">●</span> Available for Projects &amp; Internships • 2026
+            </p>
+            <p class="hero-location-line">Tamil Nadu, India</p>
+            <p class="hero-focus-line">AI Agents • Computer Vision • Full-Stack</p>
+          </div><!-- /hero-col-right -->
 
-          <!-- Large display headline -->
-          <h1 id="hero-heading" class="hero-headline">
-            <span class="headline-line headline-line--1">Building</span>
-            <span class="headline-line headline-line--2">Intelligent</span>
-            <span class="headline-line headline-line--3">Systems<span class="accent-dot" aria-hidden="true">.</span></span>
+        </div><!-- /hero-upper-grid -->
+
+        <!-- HERO GIANT FULL-WIDTH BACKDROP TYPOGRAPHY (Layered across hero) -->
+        <div class="hero-backdrop-wrap" aria-hidden="true">
+          <h1 id="hero-heading" class="hero-giant-backdrop">
+            BUILDING INTELLIGENT SYSTEMS.
           </h1>
+        </div>
 
-          <!-- Visual showcase frame -->
-          <div class="hero-frame" aria-label="Visual showcase area">
-            <!-- Monogram SVG (placeholder until profile photo is added) -->
-            <div class="hero-monogram" aria-label="Ashvanth P S monogram">
-              <svg
-                width="160"
-                height="160"
-                viewBox="0 0 160 160"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <!-- Outer ring -->
-                <circle cx="80" cy="80" r="76" stroke="#DCDBD5" stroke-width="1.5" />
-                <!-- Letter A -->
-                <text
-                  x="50%"
-                  y="54%"
-                  dominant-baseline="middle"
-                  text-anchor="middle"
-                  font-family="Plus Jakarta Sans, sans-serif"
-                  font-size="72"
-                  font-weight="800"
-                  fill="#111111"
-                  letter-spacing="-4"
-                >APS</text>
-              </svg>
-            </div>
-
-            <!-- Decorative grid lines -->
-            <div class="frame-grid-lines" aria-hidden="true">
-              <span class="grid-line grid-line--h"></span>
-              <span class="grid-line grid-line--v"></span>
-            </div>
-
-            <!-- Floating badge: SIH -->
-            <div class="badge badge--sih badge--floating" role="note" aria-label="Achievement: Smart India Hackathon, two-time participant">
-              <span class="badge-icon" aria-hidden="true">⚡</span>
-              <div class="badge-text">
-                <span class="badge-title">SIH Participant</span>
-                <span class="badge-sub font-mono">2× Smart India Hackathon</span>
-              </div>
-            </div>
-
-          </div><!-- /hero-frame -->
-
-        </div><!-- /hero-right -->
-
-      </div><!-- /hero-grid -->
+      </div><!-- /hero-studio-container -->
     </section><!-- /#about -->
 
 
@@ -1371,16 +1340,18 @@
         <!-- Large Hover-Fill Link Rows -->
         <div class="contact-links-grid" role="list" aria-label="Direct contact channels">
 
-          <!-- Email Item -->
+          <!-- Gmail Direct Item -->
           <a
-            href="mailto:ashvanth6410@gmail.com"
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=ashvanth6410@gmail.com"
             class="contact-row"
             role="listitem"
-            aria-label="Send email to ashvanth6410@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Compose direct email to Ashvanth on Gmail"
           >
             <div class="contact-row-left">
               <span class="contact-row-tag font-mono">PRIMARY INBOX</span>
-              <span class="contact-row-label">ashvanth6410@gmail.com</span>
+              <span class="contact-row-label">gmail</span>
             </div>
             <span class="contact-row-arrow font-mono" aria-hidden="true">↗</span>
           </a>
@@ -1396,7 +1367,7 @@
           >
             <div class="contact-row-left">
               <span class="contact-row-tag font-mono">SOURCE CODE</span>
-              <span class="contact-row-label">github.com/25bcs010-lang</span>
+              <span class="contact-row-label">github.com</span>
             </div>
             <span class="contact-row-arrow font-mono" aria-hidden="true">↗</span>
           </a>
@@ -1412,7 +1383,7 @@
           >
             <div class="contact-row-left">
               <span class="contact-row-tag font-mono">PROFESSIONAL NETWORK</span>
-              <span class="contact-row-label">linkedin.com/in/ashvanth-p-s</span>
+              <span class="contact-row-label">linkedin.com</span>
             </div>
             <span class="contact-row-arrow font-mono" aria-hidden="true">↗</span>
           </a>
@@ -1425,13 +1396,10 @@
   </main><!-- /#main-content -->
 
   <!-- ============================================================
-       DUAL-STAGE FOOTER
-       Stage 1 (Dark): Live IST Clock, Status, Back to Top
-       Stage 2 (Light): Interactive Grid Blueprint Strip
+       SITE FOOTER (Dark Theme)
   ============================================================ -->
   <footer class="site-footer section--dark" role="contentinfo">
 
-    <!-- UPPER STAGE (Dark) -->
     <div class="footer-upper">
       <div class="container footer-upper-inner">
 
@@ -1443,14 +1411,11 @@
           </p>
         </div>
 
-        <!-- Column 2: Live IST Clock & Telemetry -->
+        <!-- Column 2: Location & Availability -->
         <div class="footer-col">
-          <span class="footer-col-title font-mono">LIVE TELEMETRY</span>
-          <div class="clock-display" aria-label="Current time in India Standard Time">
-            <span class="clock-pulse" aria-hidden="true"></span>
-            <span id="ist-clock" class="clock-time font-mono">--:--:-- IST</span>
-          </div>
-          <span class="footer-location font-mono">Tamil Nadu, India • UTC +05:30</span>
+          <span class="footer-col-title font-mono">LOCATION</span>
+          <span class="footer-location font-mono">Tamil Nadu, India</span>
+          <span class="footer-location font-mono" style="opacity: 0.6; margin-top: 4px;">Available for 2026 roles</span>
         </div>
 
         <!-- Column 3: Quick Navigation -->
@@ -1482,46 +1447,7 @@
       </div><!-- /footer-upper-inner -->
     </div><!-- /footer-upper -->
 
-    <!-- LOWER STAGE (Light Strip): Interactive Grid Blueprint Toggle -->
-    <div class="footer-lower">
-      <div class="container">
-        <button
-          type="button"
-          id="blueprint-toggle"
-          class="blueprint-strip-btn font-mono"
-          aria-pressed="false"
-          aria-controls="grid-blueprint"
-          aria-label="Hold or click to toggle 12-column grid blueprint inspection overlay"
-        >
-          <span class="blueprint-dot" aria-hidden="true"></span>
-          <span class="blueprint-text">Hold or press [B] to inspect 12-column grid blueprint</span>
-          <span class="blueprint-state font-mono" aria-hidden="true">[INACTIVE]</span>
-        </button>
-      </div>
-    </div>
-
   </footer>
-
-  <!-- ============================================================
-       12-COLUMN GRID BLUEPRINT OVERLAY
-       Visual architectural overlay for examining CSS Grid alignment
-  ============================================================ -->
-  <aside id="grid-blueprint" class="grid-blueprint" aria-hidden="true">
-    <div class="container blueprint-grid-container">
-      <div class="blueprint-col"><span>COL 01</span></div>
-      <div class="blueprint-col"><span>COL 02</span></div>
-      <div class="blueprint-col"><span>COL 03</span></div>
-      <div class="blueprint-col"><span>COL 04</span></div>
-      <div class="blueprint-col"><span>COL 05</span></div>
-      <div class="blueprint-col"><span>COL 06</span></div>
-      <div class="blueprint-col"><span>COL 07</span></div>
-      <div class="blueprint-col"><span>COL 08</span></div>
-      <div class="blueprint-col"><span>COL 09</span></div>
-      <div class="blueprint-col"><span>COL 10</span></div>
-      <div class="blueprint-col"><span>COL 11</span></div>
-      <div class="blueprint-col"><span>COL 12</span></div>
-    </div>
-  </aside>
 
   <script src="js/script.js"></script>
 </body>
