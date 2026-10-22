@@ -1673,3 +1673,333 @@ a {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+
+/* ================================================================
+   SECTION 19: SKILLS & CAPABILITIES (#skills)
+   Dark theme | 6 Large-Type Interactive List Items + Sticky Preview
+================================================================ */
+
+.skills-section {
+  border-top: 1px solid var(--border-dark);
+  padding: var(--space-24) 0;
+}
+
+.skills-grid {
+  display:               grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap:                   var(--space-8);
+  align-items:           start; /* needed for sticky preview panel */
+}
+
+/* Left Column: cols 1–7 */
+.skills-left {
+  grid-column: 1 / 8;
+  display:     flex;
+  flex-direction: column;
+  gap:         var(--space-8);
+}
+
+.skills-header {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-3);
+  padding-bottom: var(--space-6);
+  border-bottom:  1px solid var(--border-dark);
+}
+
+.skills-title {
+  font-size:      var(--text-3xl);
+  font-weight:    800;
+  letter-spacing: -0.025em;
+  line-height:    1.15;
+  color:          var(--text-dark-primary);
+}
+
+.skills-intro {
+  font-size:   var(--text-base);
+  color:       var(--text-dark-muted);
+  max-width:   48ch;
+  line-height: 1.6;
+}
+
+/* Interactive List */
+.skills-list {
+  display:        flex;
+  flex-direction: column;
+  gap:            0;
+  border-bottom:  1px solid var(--border-dark);
+}
+
+.skill-item {
+  display:         flex;
+  align-items:     center;
+  gap:             var(--space-6);
+  padding:         var(--space-6) 0;
+  border-top:      1px solid var(--border-dark);
+  cursor:          pointer;
+  outline:         none;
+  /* Dimmed by default, bright on hover/active via opacity */
+  opacity:         0.45;
+  transition:      opacity   var(--transition-fast),
+                   transform var(--transition-fast);
+}
+
+.skill-item:hover,
+.skill-item:focus-visible,
+.skill-item.is-active {
+  opacity:   1;
+  transform: translateX(4px);
+}
+
+.skill-number {
+  font-size:      var(--text-xs);
+  letter-spacing: 0.1em;
+  color:          var(--accent);
+  font-weight:    700;
+  flex-shrink:    0;
+}
+
+.skill-name {
+  font-size:      clamp(1.25rem, 2vw + 0.5rem, 2rem);
+  font-weight:    700;
+  letter-spacing: -0.02em;
+  line-height:    1.2;
+  color:          var(--text-dark-primary);
+  flex-grow:      1;
+}
+
+.skill-arrow {
+  font-size:   var(--text-lg);
+  color:       var(--accent);
+  flex-shrink: 0;
+  opacity:     0;
+  transform:   translateX(-6px);
+  transition:  opacity   var(--transition-fast),
+               transform var(--transition-fast);
+}
+
+.skill-item:hover .skill-arrow,
+.skill-item:focus-visible .skill-arrow,
+.skill-item.is-active .skill-arrow {
+  opacity:   1;
+  transform: translateX(0);
+}
+
+/* Right Column: Sticky Live Preview Panel (cols 8–12) */
+.skills-right {
+  grid-column: 8 / -1;
+}
+
+.skill-preview-card {
+  position:       sticky;
+  top:            calc(var(--header-height) + var(--space-8));
+  background:     #141414;
+  border:         1px solid var(--border-dark);
+  border-radius:  var(--radius-lg);
+  padding:        var(--space-8);
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-5);
+  box-shadow:     0 8px 32px rgba(0, 0, 0, 0.4);
+  /* Subtly transition opacity when text swaps */
+  transition:     opacity var(--transition-base);
+}
+
+.preview-badge {
+  font-size:      var(--text-xs);
+  letter-spacing: 0.1em;
+  color:          var(--accent);
+  background:     rgba(255, 77, 0, 0.1);
+  padding:        var(--space-1) var(--space-3);
+  border-radius:  var(--radius-sm);
+  width:          fit-content;
+}
+
+.preview-title {
+  font-size:      var(--text-2xl);
+  font-weight:    700;
+  letter-spacing: -0.02em;
+  line-height:    1.2;
+  color:          var(--text-dark-primary);
+}
+
+.preview-desc {
+  font-size:   var(--text-sm);
+  color:       var(--text-dark-muted);
+  line-height: 1.65;
+}
+
+.preview-details {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-3);
+  padding-top:    var(--space-5);
+  border-top:     1px solid var(--border-dark);
+}
+
+.preview-details-heading {
+  font-size:      var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color:          var(--text-dark-muted);
+}
+
+.preview-tags {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-2);
+}
+
+.preview-tags li {
+  font-size:    var(--text-xs);
+  color:        var(--text-dark-primary);
+  line-height:  1.5;
+  padding-left: var(--space-3);
+  position:     relative;
+}
+
+.preview-tags li::before {
+  content:          '';
+  position:         absolute;
+  left:             0;
+  top:              0.55em;
+  width:            4px;
+  height:           4px;
+  background-color: var(--accent);
+  border-radius:    50%;
+}
+
+
+/* ================================================================
+   SECTION 20: HOW I WORK / BUILD PROCESS (#process)
+   Dark theme | HOW I BUILD Banner + 3 Horizontal Step Cards
+================================================================ */
+
+.process-section {
+  border-top:     1px solid var(--border-dark);
+  padding-bottom: var(--space-24);
+}
+
+.process-banner {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-3);
+  padding-bottom: var(--space-10);
+  border-bottom:  1px solid var(--border-dark);
+  margin-bottom:  var(--space-10);
+}
+
+.process-banner-label {
+  font-size:      var(--text-xs);
+  letter-spacing: 0.12em;
+  color:          var(--accent);
+  font-weight:    700;
+}
+
+.process-headline {
+  font-size:      var(--text-3xl);
+  font-weight:    800;
+  letter-spacing: -0.025em;
+  line-height:    1.15;
+  color:          var(--text-dark-primary);
+  max-width:      28ch;
+}
+
+.process-lead {
+  font-size:   var(--text-base);
+  color:       var(--text-dark-muted);
+  max-width:   48ch;
+  line-height: 1.6;
+}
+
+/* 3-Card Grid */
+.process-grid {
+  display:               grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:                   var(--space-6);
+}
+
+.process-card {
+  background:     #141414;
+  border:         1px solid var(--border-dark);
+  border-radius:  var(--radius-lg);
+  padding:        var(--space-8);
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-4);
+  box-shadow:     0 4px 20px rgba(0, 0, 0, 0.25);
+  transition:     transform var(--transition-base);
+}
+
+.process-card:hover {
+  transform: translateY(-2px);
+}
+
+.process-step-num {
+  font-size:      var(--text-xs);
+  letter-spacing: 0.1em;
+  color:          var(--accent);
+  font-weight:    700;
+}
+
+.process-step-title {
+  font-size:      var(--text-xl);
+  font-weight:    700;
+  letter-spacing: -0.015em;
+  line-height:    1.25;
+  color:          var(--text-dark-primary);
+}
+
+.process-step-desc {
+  font-size:   var(--text-sm);
+  color:       var(--text-dark-muted);
+  line-height: 1.65;
+  flex-grow:   1;
+}
+
+.process-meta {
+  font-size:      clamp(0.625rem, 0.5vw + 0.4rem, 0.6875rem);
+  letter-spacing: 0.05em;
+  color:          var(--accent);
+  padding-top:    var(--space-4);
+  border-top:     1px solid var(--border-dark);
+}
+
+
+/* ================================================================
+   SECTION 21: RESPONSIVE BREAKPOINTS (Skills & Process)
+================================================================ */
+
+/* --- MOBILE: < 768px --- */
+@media (max-width: 767.98px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap:                   var(--space-10);
+  }
+  .skills-left,
+  .skills-right {
+    grid-column: 1 / -1;
+  }
+  .skill-preview-card {
+    position: static;
+    top:      auto;
+  }
+
+  .process-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- TABLET: 768px – 1023px --- */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .skills-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .skills-left  { grid-column: 1 / 2; }
+  .skills-right { grid-column: 2 / 3; }
+
+  .process-grid {
+    grid-template-columns: 1fr;
+  }
+}

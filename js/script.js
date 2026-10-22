@@ -3,6 +3,7 @@
    Phase 1: Mobile Navigation Toggle
    Phase 2: Scroll Word-Illumination (rAF + getBoundingClientRect)
    Phase 3: Certificate Lightbox Modal (Accessible Vanilla ES6)
+   Phase 4: Skills Interactive Preview & IntersectionObserver
 ================================================================ */
 
 'use strict';
@@ -427,4 +428,170 @@ if (certModal && certCloseBtn && modalImg && modalTitle && modalSubtitle) {
       closeCertModal();
     }
   });
+}
+
+
+/* ================================================================
+   PHASE 4 — INTERACTIVE SKILLS PREVIEW PANEL & INTERSECTION OBSERVER
+   Pure Vanilla ES6 implementation:
+   - Data-driven dictionary for all 6 core competencies
+   - Synchronized hover, focus, and keyboard activation
+   - IntersectionObserver for scroll-driven active state transitions
+================================================================ */
+
+const skillsData = {
+  'local-ai': {
+    badge: 'AI / AGENTS',
+    title: 'Local AI Agent Fine-Tuning',
+    desc: 'Fine-tuning quantized open weights (Llama, Mistral, Qwen) directly on local GPU hardware. Eliminating cloud inference costs and third-party API dependencies while maintaining sovereign data control.',
+    tags: [
+      'LoRA / QLoRA parameter-efficient tuning',
+      'Local tool & function calling loops',
+      'Deterministic reasoning chains',
+      'Zero cloud data leakage'
+    ]
+  },
+  'ml-tf': {
+    badge: 'MODEL TRAINING',
+    title: 'Machine Learning & TensorFlow',
+    desc: 'End-to-end model design using TensorFlow. Data normalization, custom training loops, validation checkpointing, and conversion to edge-optimized inference runtimes.',
+    tags: [
+      'TensorFlow model pipelines',
+      'Supervised classification & regression',
+      'Edge model quantization',
+      'Cross-entropy loss optimization'
+    ]
+  },
+  'gpu-compute': {
+    badge: 'PARALLEL HARDWARE',
+    title: 'GPU Computing Workflows',
+    desc: 'Harnessing dedicated GPU hardware for accelerated batch matrix operations, gradient computation, and reduced latency model checkpoints.',
+    tags: [
+      'CUDA acceleration pipelines',
+      'VRAM memory allocation tuning',
+      'Batch tensor processing',
+      'High-throughput parallel inference'
+    ]
+  },
+  'vibe-coding': {
+    badge: 'RAPID ITERATION',
+    title: 'Full-Stack Vibe Coding',
+    desc: 'Intuition-guided, high-velocity engineering leveraging AI pairing. Rapidly scaffolding complete user interfaces, validating prototypes, and eliminating mechanical coding overhead.',
+    tags: [
+      'High-speed proof-of-concept delivery',
+      'First-principles prompt design',
+      'Dynamic component iteration',
+      'Continuous feedback loops'
+    ]
+  },
+  'cognitive-reasoning': {
+    badge: 'FIRST PRINCIPLES',
+    title: 'Cognitive & Logical Reasoning',
+    desc: 'Applying formal logical thinking and structured breakdown to complex domain problems. Isolating root causes before architecting code guarantees verified predictability.',
+    tags: [
+      'Root-cause problem decomposition',
+      'Algorithmic state analysis',
+      'Edge-case stress modeling',
+      'Deterministic execution logic'
+    ]
+  },
+  'vanilla-web': {
+    badge: 'ZERO FRAMEWORKS',
+    title: 'Vanilla Web Architecture',
+    desc: 'Engineering responsive, accessible, 60fps web applications using exclusively standard HTML5, CSS3, and ES6 JavaScript. No framework overhead or third-party bundle rot.',
+    tags: [
+      'Pure ES6+ DOM manipulation',
+      '12-column CSS Grid & clamp() scale',
+      'WCAG 2.1 AA accessibility compliance',
+      'Zero build-step runtime simplicity'
+    ]
+  }
+};
+
+const skillItems = document.querySelectorAll('.skill-item');
+const previewPanel = document.getElementById('skill-preview-panel');
+const previewBadge = document.getElementById('preview-badge');
+const previewTitle = document.getElementById('preview-title');
+const previewDesc = document.getElementById('preview-desc');
+const previewTags = document.getElementById('preview-tags');
+
+if (skillItems.length > 0 && previewPanel && previewBadge && previewTitle && previewDesc && previewTags) {
+
+  /* Function to switch active skill and update right-hand preview */
+  function setActiveSkill(skillId, sourceElement) {
+    const data = skillsData[skillId];
+    if (!data) return;
+
+    /* Update .is-active and ARIA attributes across all items */
+    skillItems.forEach(item => {
+      const isActive = item === sourceElement;
+      item.classList.toggle('is-active', isActive);
+      item.setAttribute('aria-expanded', String(isActive));
+    });
+
+    /* Smoothly update the preview card text using opacity fade */
+    previewPanel.style.opacity = '0.5';
+
+    setTimeout(() => {
+      previewBadge.textContent = data.badge;
+      previewTitle.textContent = data.title;
+      previewDesc.textContent = data.desc;
+
+      /* Rebuild tags list */
+      previewTags.innerHTML = data.tags
+        .map(tag => `<li>${tag}</li>`)
+        .join('');
+
+      previewPanel.style.opacity = '1';
+    }, 100);
+  }
+
+  /* User interaction: mouseover, focus, click, and keyboard activation */
+  skillItems.forEach(item => {
+    const skillId = item.getAttribute('data-skill-id');
+
+    /* Hover */
+    item.addEventListener('mouseover', () => {
+      setActiveSkill(skillId, item);
+    });
+
+    /* Keyboard focus */
+    item.addEventListener('focus', () => {
+      setActiveSkill(skillId, item);
+    });
+
+    /* Click */
+    item.addEventListener('click', () => {
+      setActiveSkill(skillId, item);
+    });
+
+    /* Enter or Space key */
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        setActiveSkill(skillId, item);
+      }
+    });
+  });
+
+  /* IntersectionObserver: scroll-based activation when in viewport
+     (bypassed if prefers-reduced-motion is true) */
+  if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+    const skillObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        /* When a skill item enters the central reading threshold */
+        if (entry.isIntersecting) {
+          const skillId = entry.target.getAttribute('data-skill-id');
+          setActiveSkill(skillId, entry.target);
+        }
+      });
+    }, {
+      root: null,
+      /* Focus on middle 40% band of screen */
+      rootMargin: '-30% 0px -30% 0px',
+      threshold: 0.6
+    });
+
+    skillItems.forEach(item => skillObserver.observe(item));
+  }
 }

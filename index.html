@@ -833,13 +833,190 @@
       </div><!-- /projects-grid -->
     </section><!-- /#projects -->
 
-    <section id="skills" class="section section--dark" aria-label="Skills and capabilities">
-      <!-- Phase 4 -->
-    </section>
+    <!-- ==========================================================
+         SECTION 5 — CAPABILITIES & SKILLS (#skills)
+         Dark theme | 6-item interactive large typography list
+                    | Paired with sticky live preview panel
+    ========================================================== -->
+    <section id="skills" class="section section--dark skills-section" aria-labelledby="skills-heading">
+      <div class="container skills-grid">
 
-    <section id="process" class="section section--dark" aria-label="How I work">
-      <!-- Phase 4 -->
-    </section>
+        <!-- LEFT COLUMN: 6 large typography interactive list items (cols 1–7) -->
+        <div class="skills-left">
+          <div class="skills-header">
+            <span class="section-eyebrow font-mono" aria-hidden="true">05 /</span>
+            <h2 id="skills-heading" class="skills-title">Capabilities &amp; What I Can Build</h2>
+            <p class="skills-intro">
+              Interactive breakdown of core technical domains. Hover, tap, or scroll to inspect the engineering architecture behind each capability.
+            </p>
+          </div>
+
+          <ul class="skills-list" role="list" aria-label="Interactive skills list">
+            <!-- Skill 01 -->
+            <li
+              class="skill-item is-active"
+              data-skill-id="local-ai"
+              tabindex="0"
+              role="button"
+              aria-expanded="true"
+              aria-controls="skill-preview-panel"
+            >
+              <span class="skill-number font-mono">01</span>
+              <span class="skill-name">Local AI Agent Fine-Tuning</span>
+              <span class="skill-arrow font-mono" aria-hidden="true">→</span>
+            </li>
+
+            <!-- Skill 02 -->
+            <li
+              class="skill-item"
+              data-skill-id="ml-tf"
+              tabindex="0"
+              role="button"
+              aria-expanded="false"
+              aria-controls="skill-preview-panel"
+            >
+              <span class="skill-number font-mono">02</span>
+              <span class="skill-name">Machine Learning &amp; TensorFlow</span>
+              <span class="skill-arrow font-mono" aria-hidden="true">→</span>
+            </li>
+
+            <!-- Skill 03 -->
+            <li
+              class="skill-item"
+              data-skill-id="gpu-compute"
+              tabindex="0"
+              role="button"
+              aria-expanded="false"
+              aria-controls="skill-preview-panel"
+            >
+              <span class="skill-number font-mono">03</span>
+              <span class="skill-name">GPU Computing Workflows</span>
+              <span class="skill-arrow font-mono" aria-hidden="true">→</span>
+            </li>
+
+            <!-- Skill 04 -->
+            <li
+              class="skill-item"
+              data-skill-id="vibe-coding"
+              tabindex="0"
+              role="button"
+              aria-expanded="false"
+              aria-controls="skill-preview-panel"
+            >
+              <span class="skill-number font-mono">04</span>
+              <span class="skill-name">Full-Stack Vibe Coding</span>
+              <span class="skill-arrow font-mono" aria-hidden="true">→</span>
+            </li>
+
+            <!-- Skill 05 -->
+            <li
+              class="skill-item"
+              data-skill-id="cognitive-reasoning"
+              tabindex="0"
+              role="button"
+              aria-expanded="false"
+              aria-controls="skill-preview-panel"
+            >
+              <span class="skill-number font-mono">05</span>
+              <span class="skill-name">Cognitive &amp; Logical Reasoning</span>
+              <span class="skill-arrow font-mono" aria-hidden="true">→</span>
+            </li>
+
+            <!-- Skill 06 -->
+            <li
+              class="skill-item"
+              data-skill-id="vanilla-web"
+              tabindex="0"
+              role="button"
+              aria-expanded="false"
+              aria-controls="skill-preview-panel"
+            >
+              <span class="skill-number font-mono">06</span>
+              <span class="skill-name">Vanilla Web Architecture</span>
+              <span class="skill-arrow font-mono" aria-hidden="true">→</span>
+            </li>
+          </ul>
+        </div><!-- /skills-left -->
+
+        <!-- RIGHT COLUMN: Sticky live preview panel (cols 8–12) -->
+        <aside class="skills-right" aria-label="Skill details preview panel">
+          <div id="skill-preview-panel" class="skill-preview-card" aria-live="polite">
+            <div class="preview-badge font-mono" id="preview-badge">AI / AGENTS</div>
+            <h3 class="preview-title" id="preview-title">Local AI Agent Fine-Tuning</h3>
+            <p class="preview-desc" id="preview-desc">
+              Fine-tuning quantized open weights (Llama, Mistral, Qwen) directly on local GPU hardware. Eliminating cloud inference costs and third-party API dependencies while maintaining sovereign data control.
+            </p>
+            <div class="preview-details">
+              <h4 class="preview-details-heading font-mono">Key Architectural Focus:</h4>
+              <ul class="preview-tags font-mono" id="preview-tags" role="list">
+                <li>LoRA / QLoRA parameter-efficient tuning</li>
+                <li>Local tool &amp; function calling loops</li>
+                <li>Deterministic reasoning chains</li>
+                <li>Zero cloud data leakage</li>
+              </ul>
+            </div>
+          </div>
+        </aside><!-- /skills-right -->
+
+      </div><!-- /skills-grid -->
+    </section><!-- /#skills -->
+
+
+    <!-- ==========================================================
+         SECTION 6 — HOW I BUILD (#process)
+         Dark theme | HOW I BUILD banner + 3 horizontal steps
+    ========================================================== -->
+    <section id="process" class="section section--dark process-section" aria-labelledby="process-heading">
+      <div class="container">
+
+        <!-- Banner Header -->
+        <div class="process-banner">
+          <span class="process-banner-label font-mono" aria-hidden="true">06 // HOW I BUILD</span>
+          <h2 id="process-heading" class="process-headline">
+            From First Principles to Shipped Systems.
+          </h2>
+          <p class="process-lead">
+            A disciplined, 3-step loop designed to eliminate edge-case regressions and guarantee verified system behavior.
+          </p>
+        </div>
+
+        <!-- 3 Horizontal Process Steps -->
+        <div class="process-grid" role="list" aria-label="3-Step engineering build process">
+
+          <!-- Step 1 -->
+          <article class="process-card" role="listitem">
+            <div class="process-step-num font-mono">STEP • 01</div>
+            <h3 class="process-step-title">Deconstruct &amp; Reason</h3>
+            <p class="process-step-desc">
+              Break problems down into atomic, testable premises. Map dependencies, trace latency bottlenecks, and design mental data flows before writing any code.
+            </p>
+            <div class="process-meta font-mono">INPUT: AMBIGUITY → OUTPUT: LOGICAL SPEC</div>
+          </article>
+
+          <!-- Step 2 -->
+          <article class="process-card" role="listitem">
+            <div class="process-step-num font-mono">STEP • 02</div>
+            <h3 class="process-step-title">Fine-Tune &amp; Build</h3>
+            <p class="process-step-desc">
+              Rapid iterative implementation. Fine-tune local agent weights, optimize GPU compute kernels, and assemble clean vanilla components with zero framework bloat.
+            </p>
+            <div class="process-meta font-mono">INPUT: SPEC → OUTPUT: WORKING PROTOTYPE</div>
+          </article>
+
+          <!-- Step 3 -->
+          <article class="process-card" role="listitem">
+            <div class="process-step-num font-mono">STEP • 03</div>
+            <h3 class="process-step-title">Verify &amp; Ship</h3>
+            <p class="process-step-desc">
+              Rigorous automated verification. Audit responsive breakpoints from 375px to 1440px, validate WCAG AA contrast, enforce 60fps GPU rendering, and push to Git.
+            </p>
+            <div class="process-meta font-mono">INPUT: CANDIDATE → OUTPUT: VERIFIED DELIVERABLE</div>
+          </article>
+
+        </div><!-- /process-grid -->
+
+      </div>
+    </section><!-- /#process -->
 
     <!-- ==========================================================
          SECTION 7 — ACHIEVEMENTS & CERTIFICATIONS (#achievements)
@@ -852,7 +1029,7 @@
         <!-- Section Header -->
         <div class="achievements-header">
           <div class="achievements-title-group">
-            <span class="section-eyebrow font-mono" aria-hidden="true">05 /</span>
+            <span class="section-eyebrow font-mono" aria-hidden="true">07 /</span>
             <h2 id="achievements-heading" class="achievements-title">Verified Achievements</h2>
           </div>
           <p class="achievements-descriptor">
