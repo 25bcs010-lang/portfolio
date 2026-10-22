@@ -1237,18 +1237,177 @@
       </div>
     </div>
 
-    <section id="contact" class="section section--dark" aria-label="Contact Ashvanth">
-      <!-- Phase 5 -->
-    </section>
+    <!-- ==========================================================
+         SECTION 8 — CONTACT & WORK TOGETHER (#contact)
+         Dark theme | Large display CTA + direct links
+    ========================================================== -->
+    <section id="contact" class="section section--dark contact-section" aria-labelledby="contact-heading">
+      <div class="container contact-container">
+
+        <div class="contact-header">
+          <span class="section-eyebrow font-mono" aria-hidden="true">08 // INITIATE CONTACT</span>
+          <h2 id="contact-heading" class="contact-headline">
+            Let's Build Something Intelligent.
+          </h2>
+          <p class="contact-lead">
+            Whether you want to discuss local AI agent architectures, GPU compute optimization, or collegiate hackathon collaborations, my inbox is open.
+          </p>
+        </div>
+
+        <!-- Large Hover-Fill Link Rows -->
+        <div class="contact-links-grid" role="list" aria-label="Direct contact channels">
+
+          <!-- Email Item -->
+          <a
+            href="mailto:ashvanth6410@gmail.com"
+            class="contact-row"
+            role="listitem"
+            aria-label="Send email to ashvanth6410@gmail.com"
+          >
+            <div class="contact-row-left">
+              <span class="contact-row-tag font-mono">PRIMARY INBOX</span>
+              <span class="contact-row-label">ashvanth6410@gmail.com</span>
+            </div>
+            <span class="contact-row-arrow font-mono" aria-hidden="true">↗</span>
+          </a>
+
+          <!-- GitHub Item -->
+          <a
+            href="https://github.com/25bcs010-lang"
+            class="contact-row"
+            role="listitem"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View Ashvanth's GitHub profile"
+          >
+            <div class="contact-row-left">
+              <span class="contact-row-tag font-mono">SOURCE CODE</span>
+              <span class="contact-row-label">github.com/25bcs010-lang</span>
+            </div>
+            <span class="contact-row-arrow font-mono" aria-hidden="true">↗</span>
+          </a>
+
+          <!-- LinkedIn Item -->
+          <a
+            href="https://www.linkedin.com/in/ashvanth-p-s/?isSelfProfile=true"
+            class="contact-row"
+            role="listitem"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View Ashvanth's LinkedIn profile"
+          >
+            <div class="contact-row-left">
+              <span class="contact-row-tag font-mono">PROFESSIONAL NETWORK</span>
+              <span class="contact-row-label">linkedin.com/in/ashvanth-p-s</span>
+            </div>
+            <span class="contact-row-arrow font-mono" aria-hidden="true">↗</span>
+          </a>
+
+        </div><!-- /contact-links-grid -->
+
+      </div>
+    </section><!-- /#contact -->
 
   </main><!-- /#main-content -->
 
   <!-- ============================================================
-       FOOTER — Phase 5
+       DUAL-STAGE FOOTER
+       Stage 1 (Dark): Live IST Clock, Status, Back to Top
+       Stage 2 (Light): Interactive Grid Blueprint Strip
   ============================================================ -->
   <footer class="site-footer section--dark" role="contentinfo">
-    <!-- Phase 5 -->
+
+    <!-- UPPER STAGE (Dark) -->
+    <div class="footer-upper">
+      <div class="container footer-upper-inner">
+
+        <!-- Column 1: Identity & Role -->
+        <div class="footer-col">
+          <span class="footer-brand font-mono">ASHVANTH P S</span>
+          <p class="footer-bio">
+            College Student • AI &amp; ML Builder specializing in local agent fine-tuning and GPU computing.
+          </p>
+        </div>
+
+        <!-- Column 2: Live IST Clock & Telemetry -->
+        <div class="footer-col">
+          <span class="footer-col-title font-mono">LIVE TELEMETRY</span>
+          <div class="clock-display" aria-label="Current time in India Standard Time">
+            <span class="clock-pulse" aria-hidden="true"></span>
+            <span id="ist-clock" class="clock-time font-mono">--:--:-- IST</span>
+          </div>
+          <span class="footer-location font-mono">Tamil Nadu, India • UTC +05:30</span>
+        </div>
+
+        <!-- Column 3: Quick Navigation -->
+        <div class="footer-col">
+          <span class="footer-col-title font-mono">NAVIGATION</span>
+          <ul class="footer-nav" role="list">
+            <li><a href="#about">About</a></li>
+            <li><a href="#toolkit">Toolkit</a></li>
+            <li><a href="#philosophy">Philosophy</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#achievements">Achievements</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Back to top -->
+        <div class="footer-col footer-col--action">
+          <button
+            type="button"
+            id="back-to-top"
+            class="btn-secondary back-to-top-btn font-mono"
+            aria-label="Scroll back to top of page"
+          >
+            Back to top ↑
+          </button>
+          <span class="copyright font-mono">© 2026 Ashvanth P S</span>
+        </div>
+
+      </div><!-- /footer-upper-inner -->
+    </div><!-- /footer-upper -->
+
+    <!-- LOWER STAGE (Light Strip): Interactive Grid Blueprint Toggle -->
+    <div class="footer-lower">
+      <div class="container">
+        <button
+          type="button"
+          id="blueprint-toggle"
+          class="blueprint-strip-btn font-mono"
+          aria-pressed="false"
+          aria-controls="grid-blueprint"
+          aria-label="Hold or click to toggle 12-column grid blueprint inspection overlay"
+        >
+          <span class="blueprint-dot" aria-hidden="true"></span>
+          <span class="blueprint-text">Hold or press [B] to inspect 12-column grid blueprint</span>
+          <span class="blueprint-state font-mono" aria-hidden="true">[INACTIVE]</span>
+        </button>
+      </div>
+    </div>
+
   </footer>
+
+  <!-- ============================================================
+       12-COLUMN GRID BLUEPRINT OVERLAY
+       Visual architectural overlay for examining CSS Grid alignment
+  ============================================================ -->
+  <aside id="grid-blueprint" class="grid-blueprint" aria-hidden="true">
+    <div class="container blueprint-grid-container">
+      <div class="blueprint-col"><span>COL 01</span></div>
+      <div class="blueprint-col"><span>COL 02</span></div>
+      <div class="blueprint-col"><span>COL 03</span></div>
+      <div class="blueprint-col"><span>COL 04</span></div>
+      <div class="blueprint-col"><span>COL 05</span></div>
+      <div class="blueprint-col"><span>COL 06</span></div>
+      <div class="blueprint-col"><span>COL 07</span></div>
+      <div class="blueprint-col"><span>COL 08</span></div>
+      <div class="blueprint-col"><span>COL 09</span></div>
+      <div class="blueprint-col"><span>COL 10</span></div>
+      <div class="blueprint-col"><span>COL 11</span></div>
+      <div class="blueprint-col"><span>COL 12</span></div>
+    </div>
+  </aside>
 
   <script src="js/script.js"></script>
 </body>

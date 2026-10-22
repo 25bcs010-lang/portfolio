@@ -4,6 +4,7 @@
    Phase 2: Scroll Word-Illumination (rAF + getBoundingClientRect)
    Phase 3: Certificate Lightbox Modal (Accessible Vanilla ES6)
    Phase 4: Skills Interactive Preview & IntersectionObserver
+   Phase 5: Live IST Clock, Back to Top, & Grid Blueprint Overlay
 ================================================================ */
 
 'use strict';
@@ -594,4 +595,125 @@ if (skillItems.length > 0 && previewPanel && previewBadge && previewTitle && pre
 
     skillItems.forEach(item => skillObserver.observe(item));
   }
+}
+
+
+/* ================================================================
+   PHASE 5 — LIVE IST CLOCK, BACK TO TOP, & GRID BLUEPRINT OVERLAY
+   Pure Vanilla ES6 implementation:
+   - Live Indian Standard Time (IST) clock via Intl.DateTimeFormat
+   - Back to top smooth window scrolling
+   - Hold/toggle 12-column CSS Grid blueprint inspection overlay
+================================================================ */
+
+/* ----------------------------------------------------------------
+   1. LIVE IST CLOCK
+   Intl.DateTimeFormat provides localized, timezone-aware formatting
+   without pulling in moment.js, dayjs, or any external library.
+---------------------------------------------------------------- */
+const istClockElement = document.getElementById('ist-clock');
+
+if (istClockElement) {
+  const istFormatter = new Intl.DateTimeFormat('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  });
+
+  function updateISTClock() {
+    try {
+      const now = new Date();
+      istClockElement.textContent = `${istFormatter.format(now)} IST`;
+    } catch (e) {
+      /* Fallback for environments lacking specific locale options */
+      const now = new Date();
+      istClockElement.textContent = now.toTimeString().split(' ')[0] + ' IST';
+    }
+  }
+
+  /* Run immediately and update every 1000ms */
+  updateISTClock();
+  setInterval(updateISTClock, 1000);
+}
+
+
+/* ----------------------------------------------------------------
+   2. BACK TO TOP BUTTON
+   Smoothly scrolls viewport to (0, 0)
+---------------------------------------------------------------- */
+const backToTopBtn = document.getElementById('back-to-top');
+
+if (backToTopBtn) {
+  backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: prefersReducedMotion ? 'auto' : 'smooth'
+    });
+  });
+}
+
+
+/* ----------------------------------------------------------------
+   3. 12-COLUMN GRID BLUEPRINT OVERLAY TOGGLE
+   Inspects CSS Grid column alignment across the entire viewport.
+   Supports:
+   - "Hold to inspect" (mousedown / touchstart)
+   - Click to toggle
+   - Keyboard shortcut: 'b' or 'B'
+---------------------------------------------------------------- */
+const blueprintToggle = document.getElementById('blueprint-toggle');
+const gridBlueprint = document.getElementById('grid-blueprint');
+
+if (blueprintToggle && gridBlueprint) {
+  const blueprintStateLabel = blueprintToggle.querySelector('.blueprint-state');
+  let isBlueprintActive = false;
+
+  function setBlueprintState(active) {
+    isBlueprintActive = active;
+    gridBlueprint.classList.toggle('is-visible', active);
+    gridBlueprint.setAttribute('aria-hidden', String(!active));
+    blueprintToggle.setAttribute('aria-pressed', String(active));
+
+    if (blueprintStateLabel) {
+      blueprintStateLabel.textContent = active ? '[ACTIVE]' : '[INACTIVE]';
+    }
+  }
+
+  /* Click toggle */
+  blueprintToggle.addEventListener('click', () => {
+    setBlueprintState(!isBlueprintActive);
+  });
+
+  /* Hold down with mouse */
+  blueprintToggle.addEventListener('mousedown', () => {
+    setBlueprintState(true);
+  });
+  window.addEventListener('mouseup', () => {
+    if (isBlueprintActive) {
+      setBlueprintState(false);
+    }
+  });
+
+  /* Touch events for mobile */
+  blueprintToggle.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    setBlueprintState(true);
+  }, { passive: false });
+  window.addEventListener('touchend', () => {
+    if (isBlueprintActive) {
+      setBlueprintState(false);
+    }
+  });
+
+  /* Global keyboard shortcut: 'b' or 'B' */
+  document.addEventListener('keydown', (e) => {
+    /* Ignore if typing in an input or textarea */
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+    if (e.key === 'b' || e.key === 'B') {
+      setBlueprintState(!isBlueprintActive);
+    }
+  });
 }
