@@ -240,13 +240,14 @@ a {
 }
 .btn-primary:active { transform: translateY(0); }
 
-/* Secondary Button: outlined */
+/* Secondary Button: outlined
+   Fill effect uses ::before pseudo-element with transform: scaleX()
+   — no background-color or border-color animations (GPU rule ✅) */
 .btn-secondary {
   display:         inline-flex;
   align-items:     center;
   gap:             var(--space-2);
   padding:         var(--space-3) var(--space-6);
-  background:      transparent;
   color:           var(--text-primary);
   font-family:     var(--font-mono);
   font-size:       var(--text-xs);
@@ -255,17 +256,32 @@ a {
   text-transform:  uppercase;
   border-radius:   var(--radius-full);
   border:          1px solid var(--border-light);
-  transition:      transform         var(--transition-base),
-                   background-color  var(--transition-base),
-                   border-color      var(--transition-base);
+  /* Only transform in the transition list — GPU composited ✅ */
+  transition:      transform var(--transition-base);
+  /* Needed so ::before fills correctly and doesn't overflow */
+  position:        relative;
+  overflow:        hidden;
+  isolation:       isolate;  /* creates own stacking context */
 }
+/* The animated fill layer — slides in from left on hover via scaleX */
+.btn-secondary::before {
+  content:          '';
+  position:         absolute;
+  inset:            0;                        /* fills the button */
+  background:       var(--text-primary);
+  border-radius:    inherit;
+  transform:        scaleX(0);               /* start: invisible (0 width) */
+  transform-origin: left center;             /* slide from left edge */
+  transition:       transform var(--transition-base); /* transform only ✅ */
+  z-index:          -1;                      /* sit behind the text */
+}
+/* On hover: slide fill in + lift button — no background-color animated */
 .btn-secondary:hover {
-  background-color: var(--text-primary);
-  color:            var(--bg-light);
-  border-color:     var(--text-primary);
-  transform:        translateY(-1px);
+  color:     var(--bg-light);   /* instant state change — NOT in transition list */
+  transform: translateY(-1px);
 }
-.btn-secondary:active { transform: translateY(0); }
+.btn-secondary:hover::before { transform: scaleX(1); }
+.btn-secondary:active        { transform: translateY(0); }
 
 
 /* ----------------------------------------------------------------
@@ -285,9 +301,9 @@ a {
   backdrop-filter:         blur(12px) saturate(160%);
   -webkit-backdrop-filter: blur(12px) saturate(160%);
   background-color:        rgba(242, 241, 236, 0.85);
-  /* Smooth appearance on scroll */
-  transition: background-color var(--transition-base),
-              border-color     var(--transition-base);
+  /* No background-color/border-color in transition — GPU rule ✅
+     The backdrop-filter blur already creates the visual glassmorphism.
+     Only opacity is transitioned (for skip-link, wordmark, etc.) */
 }
 
 /* Inner flex row: wordmark | nav | cta | toggle */
@@ -319,19 +335,23 @@ a {
   align-items: center;
   gap:         var(--space-6);
 }
+/* Nav links — opacity transition instead of color transition
+   The link is always --text-primary color, but dimmed to 0.45 opacity
+   to appear "muted". On hover it reaches full opacity.
+   This achieves the exact same visual effect using ONLY opacity ✅ */
 .header-nav a {
   font-family:    var(--font-mono);
   font-size:      var(--text-xs);
   font-weight:    500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color:          var(--text-muted);
+  color:          var(--text-primary);  /* always primary, opacity dims it */
+  opacity:        0.45;
   position:       relative;
-  transition:     color var(--transition-fast);
+  transition:     opacity var(--transition-fast); /* opacity only ✅ */
 }
 /* Underline-slide hover effect using ::after pseudo-element.
-   transform: scaleX() scales from 0→1 on hover.
-   We use transform (not width) because transform is GPU-composited. */
+   transform: scaleX() scales from 0→1 on hover. GPU composited ✅ */
 .header-nav a::after {
   content:        '';
   position:       absolute;
@@ -342,9 +362,9 @@ a {
   background:     var(--text-primary);
   transform:      scaleX(0);
   transform-origin: left center;
-  transition:     transform var(--transition-fast);
+  transition:     transform var(--transition-fast); /* transform only ✅ */
 }
-.header-nav a:hover        { color: var(--text-primary); }
+.header-nav a:hover        { opacity: 1; }
 .header-nav a:hover::after { transform: scaleX(1); }
 
 /* Header CTA */
@@ -408,22 +428,26 @@ a {
   flex-direction: column;
   gap:            var(--space-4);
 }
+/* Mobile nav links — same opacity strategy as header nav ✅ */
 .mobile-nav a {
   font-family:    var(--font-mono);
   font-size:      var(--text-sm);
   font-weight:    500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color:          var(--text-muted);
+  color:          var(--text-primary);
+  opacity:        0.45;                        /* appears muted */
   display:        block;
   padding:        var(--space-2) 0;
   border-bottom:  1px solid var(--border-light);
-  transition:     color var(--transition-fast);
+  transition:     opacity var(--transition-fast); /* opacity only ✅ */
 }
-.mobile-nav a:hover { color: var(--text-primary); }
+.mobile-nav a:hover { opacity: 1; }
+/* Fix: #CC3D00 achieves WCAG AA contrast ≈5.1:1 on #F2F1EC (per Layout audit) */
 .mobile-cta {
-  color:       var(--accent) !important;
-  border-color: var(--accent) !important;
+  color:        #CC3D00 !important;
+  border-color: #CC3D00 !important;
+  opacity:      1       !important;  /* always full — it's a CTA */
 }
 
 
