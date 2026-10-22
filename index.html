@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ashvanth P S — College Student specialising in AI/ML, Local Agent Fine-Tuning, GPU Computing, and Vibe Coding." />
+  <meta name="author" content="Ashvanth P S" />
+  <title>Ashvanth P S — AI/ML Builder</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans + JetBrains Mono (Open Font License 1.1) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       HEADER — Fixed top navigation bar
+       Role: Site-wide landmark, keyboard-accessible anchor nav
+  ============================================================ -->
+  <header class="site-header" role="banner">
+    <div class="header-inner container">
+
+      <!-- Wordmark / Home anchor -->
+      <a href="#about" class="header-wordmark" aria-label="Ashvanth P S — back to top">
+        ASHVANTH P S
+      </a>
+
+      <!-- Primary Navigation -->
+      <nav class="header-nav" aria-label="Primary navigation">
+        <ul role="list">
+          <li><a href="#about">About</a></li>
+          <li><a href="#toolkit">Toolkit</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#achievements">Achievements</a></li>
+        </ul>
+      </nav>
+
+      <!-- CTA Button -->
+      <a href="#contact" class="header-cta btn-primary" aria-label="Contact Ashvanth">
+        Contact Me ↗
+      </a>
+
+      <!-- Hamburger toggle (mobile only) -->
+      <button
+        class="nav-toggle"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+
+    </div>
+
+    <!-- Mobile navigation drawer -->
+    <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation" aria-hidden="true">
+      <ul role="list">
+        <li><a href="#about">About</a></li>
+        <li><a href="#toolkit">Toolkit</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#achievements">Achievements</a></li>
+        <li><a href="#contact" class="mobile-cta">Contact Me ↗</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ============================================================
+       MAIN CONTENT
+  ============================================================ -->
+  <main id="main-content">
+
+    <!-- ==========================================================
+         SECTION 1 — HERO / ABOUT  (#about)
+         Role: First impression — asymmetric split layout
+         Light theme section
+    ========================================================== -->
+    <section id="about" class="section section--light hero-section" aria-labelledby="hero-heading">
+      <div class="container hero-grid">
+
+        <!-- LEFT RAIL (cols 1–4 on desktop) -->
+        <div class="hero-left rail">
+
+          <!-- Status dot + role tag -->
+          <div class="hero-tag" aria-label="Status: Open to opportunities">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span class="font-mono">College Student • AI &amp; ML Builder</span>
+          </div>
+
+          <!-- Short bio intro -->
+          <p class="hero-bio">
+            I build intelligent systems — fine-tuning AI agents locally,
+            designing GPU compute workflows, and shipping full products
+            through structured reasoning.
+          </p>
+
+          <!-- CTA -->
+          <a href="#projects" class="btn-secondary hero-cta" aria-label="Explore Ashvanth's work">
+            Explore Work ↓
+          </a>
+
+          <!-- Floating badge: MSME Hackathon -->
+          <div class="badge badge--msme" role="note" aria-label="Achievement: MSME Hackathon Finalist">
+            <span class="badge-icon" aria-hidden="true">🏆</span>
+            <div class="badge-text">
+              <span class="badge-title">MSME Hackathon</span>
+              <span class="badge-sub font-mono">Final Round</span>
+            </div>
+          </div>
+
+        </div><!-- /hero-left -->
+
+        <!-- RIGHT MAIN (cols 5–12 on desktop) -->
+        <div class="hero-right">
+
+          <!-- Large display headline -->
+          <h1 id="hero-heading" class="hero-headline">
+            <span class="headline-line headline-line--1">Building</span>
+            <span class="headline-line headline-line--2">Intelligent</span>
+            <span class="headline-line headline-line--3">Systems<span class="accent-dot" aria-hidden="true">.</span></span>
+          </h1>
+
+          <!-- Visual showcase frame -->
+          <div class="hero-frame" aria-label="Visual showcase area">
+            <!-- Monogram SVG (placeholder until profile photo is added) -->
+            <div class="hero-monogram" aria-label="Ashvanth P S monogram">
+              <svg
+                width="160"
+                height="160"
+                viewBox="0 0 160 160"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <!-- Outer ring -->
+                <circle cx="80" cy="80" r="76" stroke="#DCDBD5" stroke-width="1.5" />
+                <!-- Letter A -->
+                <text
+                  x="50%"
+                  y="54%"
+                  dominant-baseline="middle"
+                  text-anchor="middle"
+                  font-family="Plus Jakarta Sans, sans-serif"
+                  font-size="72"
+                  font-weight="800"
+                  fill="#111111"
+                  letter-spacing="-4"
+                >APS</text>
+              </svg>
+            </div>
+
+            <!-- Decorative grid lines -->
+            <div class="frame-grid-lines" aria-hidden="true">
+              <span class="grid-line grid-line--h"></span>
+              <span class="grid-line grid-line--v"></span>
+            </div>
+
+            <!-- Floating badge: SIH -->
+            <div class="badge badge--sih badge--floating" role="note" aria-label="Achievement: Smart India Hackathon, two-time participant">
+              <span class="badge-icon" aria-hidden="true">⚡</span>
+              <div class="badge-text">
+                <span class="badge-title">SIH Participant</span>
+                <span class="badge-sub font-mono">2× Smart India Hackathon</span>
+              </div>
+            </div>
+
+          </div><!-- /hero-frame -->
+
+        </div><!-- /hero-right -->
+
+      </div><!-- /hero-grid -->
+    </section><!-- /#about -->
+
+
+    <!-- ==========================================================
+         PLACEHOLDER SECTIONS — filled in Phase 2–5
+    ========================================================== -->
+
+    <section id="toolkit" class="section section--light" aria-label="Tech and capability toolkit">
+      <!-- Phase 2 -->
+    </section>
+
+    <section id="philosophy" class="section section--dark" aria-label="Engineering philosophy">
+      <!-- Phase 2 -->
+    </section>
+
+    <section id="projects" class="section section--light" aria-label="Selected projects">
+      <!-- Phase 3 -->
+    </section>
+
+    <section id="skills" class="section section--dark" aria-label="Skills and capabilities">
+      <!-- Phase 4 -->
+    </section>
+
+    <section id="process" class="section section--dark" aria-label="How I work">
+      <!-- Phase 4 -->
+    </section>
+
+    <section id="achievements" class="section section--light" aria-label="Achievements and certifications">
+      <!-- Phase 5 -->
+    </section>
+
+    <section id="contact" class="section section--dark" aria-label="Contact Ashvanth">
+      <!-- Phase 5 -->
+    </section>
+
+  </main><!-- /#main-content -->
+
+  <!-- ============================================================
+       FOOTER — Phase 5
+  ============================================================ -->
+  <footer class="site-footer section--dark" role="contentinfo">
+    <!-- Phase 5 -->
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
