@@ -109,6 +109,16 @@ const kineticBridge = document.querySelector('.kinetic-bridge');
 const kineticStages = document.querySelectorAll('.kinetic-stage');
 let currentActiveStage = 1;
 
+/* DOM references for Selected Projects Kinetic Title & Horizontal Scroll */
+const projectsTitleStage   = document.querySelector('.projects-title-stage');
+const titleWordLeft        = document.querySelector('.projects-title-word--left');
+const titleWordRight       = document.querySelector('.projects-title-word--right');
+const projectsScrollStage  = document.querySelector('.projects-scroll-stage');
+const projectsViewport     = document.querySelector('.projects-sticky-viewport');
+const projectsTrack        = document.querySelector('.projects-track');
+const projectBadges        = document.querySelectorAll('.proj-badge');
+let currentProjectBadgeIdx = 0;
+
 /* The "ticking" flag is the heart of the requestAnimationFrame
    debounce pattern. It prevents us from scheduling multiple rAF
    callbacks in a single frame when the scroll event fires rapidly. */
@@ -127,6 +137,7 @@ if (prefersReducedMotion) {
     narrativeParagraph.style.opacity = '1';
   }
   resetHeroParallax();
+  resetProjectsMotion();
 } else {
   /* ── NORMAL PATH ──────────────────────────────────────────────
      Split the paragraph text into individual word <span>s,
@@ -146,12 +157,19 @@ if (prefersReducedMotion) {
      scrolling before our JS code even runs), giving silky 60fps. */
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  /* Window resize listener: resets parallax when transitioning to mobile */
+  /* Window resize listener: resets parallax and projects when transitioning */
   window.addEventListener('resize', () => {
     if (window.innerWidth < 768) {
       resetHeroParallax();
     } else {
       updateHeroParallax();
+    }
+
+    if (window.innerWidth < 1024) {
+      resetProjectsMotion();
+    } else {
+      updateProjectsTitle();
+      updateProjectsHorizontalScroll();
     }
   }, { passive: true });
 }
@@ -239,6 +257,12 @@ function renderScrollFrame() {
 
   /* 3. Kinetic Bridge 3-stage visual scrubbing */
   updateKineticBridge();
+
+  /* 4. Selected Projects kinetic title slide-in */
+  updateProjectsTitle();
+
+  /* 5. Selected Projects horizontal scroll scrubbing */
+  updateProjectsHorizontalScroll();
 
   /* Reset the ticking flag so the next scroll event schedules a new frame */
   ticking = false;
@@ -464,6 +488,124 @@ function updateKineticBridge() {
       stage.classList.toggle('is-active', isTarget);
       stage.setAttribute('aria-hidden', String(!isTarget));
     });
+  }
+}
+
+
+/* ================================================================
+   SELECTED PROJECTS: KINETIC TITLE SLIDE-IN & HORIZONTAL SCROLL
+   Pure Vanilla ES6 implementation:
+   - GPU-composited transform/opacity only
+   - requestAnimationFrame synchronized rendering
+   - Viewport-boundary checks to prevent unnecessary operations
+   - Clean bypass for mobile (< 1024px) and prefers-reduced-motion
+================================================================ */
+
+function updateProjectsTitle() {
+  if (!projectsTitleStage || !titleWordLeft || !titleWordRight) return;
+
+  if (prefersReducedMotion || window.innerWidth < 1024) {
+    if (titleWordLeft.style.transform) {
+      titleWordLeft.style.transform = '';
+      titleWordLeft.style.opacity   = '';
+      titleWordRight.style.transform = '';
+      titleWordRight.style.opacity  = '';
+    }
+    return;
+  }
+
+  const rect = projectsTitleStage.getBoundingClientRect();
+  const vh   = window.innerHeight;
+
+  /* If completely outside the viewport, skip calculation */
+  if (rect.bottom < 0 || rect.top > vh) return;
+
+  /* Scrubbing window: begins as top reaches 95% viewport, finishes around 30% */
+  const ENTRY = vh * 0.95;
+  const EXIT  = vh * 0.30;
+  const SPAN  = ENTRY - EXIT;
+
+  const rawProgress = (ENTRY - rect.top) / SPAN;
+  const progress    = Math.min(1, Math.max(0, rawProgress));
+
+  /* Offset ranges from -18vw (left word) / +18vw (right word) inward to 0 */
+  const offset  = (18 * (1 - progress)).toFixed(2);
+  const opacity = (0.3 + 0.7 * progress).toFixed(3);
+
+  titleWordLeft.style.transform  = `translate3d(-${offset}vw, 0, 0)`;
+  titleWordLeft.style.opacity    = opacity;
+
+  titleWordRight.style.transform = `translate3d(${offset}vw, 0, 0)`;
+  titleWordRight.style.opacity   = opacity;
+}
+
+function updateProjectsHorizontalScroll() {
+  if (!projectsScrollStage || !projectsTrack) return;
+
+  if (prefersReducedMotion || window.innerWidth < 1024) {
+    if (projectsTrack.style.transform) {
+      projectsTrack.style.transform = '';
+    }
+    return;
+  }
+
+  const stageRect = projectsScrollStage.getBoundingClientRect();
+  const vh        = window.innerHeight;
+  const headerEl  = document.querySelector('header');
+  const headerH   = headerEl ? headerEl.offsetHeight : 72;
+
+  /* If stage hasn't entered or has passed far below viewport, skip */
+  if (stageRect.bottom < 0 || stageRect.top > vh) return;
+
+  const totalScrollable = stageRect.height - (vh - headerH);
+  if (totalScrollable <= 0) return;
+
+  const scrolled = headerH - stageRect.top;
+  const progress = Math.min(1, Math.max(0, scrolled / totalScrollable));
+
+  /* Max translation distance required to scroll all cards horizontally */
+  const trackWidth    = projectsTrack.scrollWidth;
+  const viewportWidth = window.innerWidth;
+  const maxTranslate  = Math.max(0, trackWidth - viewportWidth + (viewportWidth * 0.05));
+
+  const translateX = -(progress * maxTranslate);
+  projectsTrack.style.transform = `translate3d(${translateX.toFixed(2)}px, 0, 0)`;
+
+  /* Update active index badge in the center visual frame based on horizontal progress */
+  if (projectBadges.length > 0) {
+    let activeIdx = 0;
+    if (progress >= 0.75) {
+      activeIdx = 3;
+    } else if (progress >= 0.50) {
+      activeIdx = 2;
+    } else if (progress >= 0.25) {
+      activeIdx = 1;
+    } else {
+      activeIdx = 0;
+    }
+
+    if (activeIdx !== currentProjectBadgeIdx) {
+      currentProjectBadgeIdx = activeIdx;
+      projectBadges.forEach((badge, idx) => {
+        const isActive = idx === activeIdx;
+        badge.classList.toggle('is-active', isActive);
+        badge.setAttribute('aria-hidden', String(!isActive));
+      });
+    }
+  }
+}
+
+function resetProjectsMotion() {
+  if (titleWordLeft && titleWordLeft.style.transform) {
+    titleWordLeft.style.transform = '';
+    titleWordLeft.style.opacity   = '';
+  }
+  if (titleWordRight && titleWordRight.style.transform) {
+    titleWordRight.style.transform = '';
+    titleWordRight.style.opacity   = '';
+  }
+  if (projectsTrack && projectsTrack.style.transform) {
+    projectsTrack.style.transform = '';
   }
 }
 

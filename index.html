@@ -589,331 +589,381 @@
 
     <!-- ==========================================================
          SECTION 4 — SELECTED PROJECTS (#projects)
-         Light theme | Left sticky rail: "● Selected Projects"
-                     | Right area: 4 structured case study slots + GitHub bar
+         Dark studio theme | Kinetic slide-in split title
+                           | Right-to-Left horizontal scroll stage (4 real projects)
+                           | Centered GitHub research repository callout
     ========================================================== -->
-    <section id="projects" class="section section--light projects-section" aria-labelledby="projects-heading">
-      <div class="container projects-grid">
+    <section id="projects" class="section section--dark projects-section" aria-labelledby="projects-heading">
 
-        <!-- LEFT STICKY RAIL (cols 1–4) -->
-        <aside class="projects-left" aria-label="Projects overview rail">
-          <div class="projects-sticky">
-            <span class="section-eyebrow font-mono" aria-hidden="true">04 /</span>
-            <h2 id="projects-heading" class="projects-title">
-              <span class="projects-dot" aria-hidden="true">●</span> Selected Projects
-            </h2>
-            <p class="projects-lead">
-              Structured engineering case studies. Built with focus on local AI models, performant pipelines, and resilient web architectures.
-            </p>
-            <div class="projects-meta-tag font-mono">
-              <span>CASE STUDIES (4 SLOTS)</span>
+      <!-- KINETIC TITLE STAGE: "SELECTED [VISUAL] PROJECTS" -->
+      <div class="projects-title-stage" aria-label="Selected Projects header animation">
+        <div class="projects-title-row">
+          <span class="projects-title-word projects-title-word--left" aria-hidden="true">SELECTED</span>
+          <div class="projects-title-visual" aria-hidden="true">
+            <div class="projects-badge-fader">
+              <span class="proj-badge is-active" data-index="0">01 / TRANSIT</span>
+              <span class="proj-badge" data-index="1">02 / MED-IOT</span>
+              <span class="proj-badge" data-index="2">03 / SAT-AI</span>
+              <span class="proj-badge" data-index="3">04 / VISION-XAI</span>
             </div>
           </div>
-        </aside><!-- /projects-left -->
+          <span class="projects-title-word projects-title-word--right" aria-hidden="true">PROJECTS</span>
+        </div>
+        <div class="sr-only">
+          <h2 id="projects-heading">Selected Projects</h2>
+        </div>
+      </div>
 
-        <!-- RIGHT AREA (cols 5–12): 4 structured project case-study slots -->
-        <div class="projects-right">
-          <div class="projects-list">
+      <!-- HORIZONTAL SCROLL STAGE -->
+      <div class="projects-scroll-stage">
+        <div class="projects-sticky-viewport">
+          <div class="projects-track" role="region" aria-label="Horizontal project case studies track">
 
-            <!-- ==========================================
-                 PROJECT CASE STUDY 01
-            =========================================== -->
-            <!-- TODO: INSERT REAL PROJECT DATA -->
+            <!-- PROJECT 01 -->
             <article class="project-card" aria-labelledby="project-1-title">
-              <header class="project-card-header">
-                <span class="project-index font-mono">01 // CASE STUDY</span>
-                <h3 id="project-1-title" class="project-title">[Project Title Placeholder — e.g. Local LLM Agent Pipeline]</h3>
-              </header>
-
-              <!-- Project Screenshot Frame -->
-              <div class="project-media-frame" aria-label="Project 1 screenshot placeholder">
-                <div class="placeholder-graphic" aria-hidden="true">
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                    <circle cx="8.5" cy="8.5" r="1.5"/>
-                    <polyline points="21 15 16 10 5 21"/>
-                  </svg>
-                  <span class="font-mono placeholder-label">[Screenshot Placeholder — images/project-one.png]</span>
+              <div class="project-card-content">
+                <div class="project-tag-row">
+                  <span class="project-tag font-mono">01 // TRANSIT SYSTEMS &amp; LOGISTICS</span>
+                  <span class="project-status-dot" aria-hidden="true"></span>
                 </div>
-              </div>
+                <h3 id="project-1-title" class="project-card-title">TNSTC Admin Portal</h3>
+                <p class="project-card-subtitle font-mono">Tamil Nadu State Transport Corporation Scheduling &amp; Fleet Dispatch Architecture</p>
 
-              <div class="project-body">
-                <div class="project-field">
-                  <h4 class="field-label font-mono">Problem</h4>
-                  <p class="field-value">
-                    <!-- TODO: INSERT REAL PROJECT DATA -->
-                    [Define the concrete technical friction, latency bottleneck, or data constraint this project solves.]
+                <div class="project-field-block">
+                  <span class="project-field-label font-mono">PROBLEM STATEMENT</span>
+                  <p class="project-field-desc">
+                    Legacy municipal transit workflows relied on fragmented manual schedules, resulting in route scheduling lag, high dispatch latency, and zero real-time crew visibility.
                   </p>
                 </div>
 
-                <div class="project-field">
-                  <h4 class="field-label font-mono">My Role</h4>
-                  <p class="field-value">
-                    <!-- TODO: INSERT REAL PROJECT DATA -->
-                    [Your specific responsibilities: e.g. Architecture design, local model fine-tuning, benchmark evaluation.]
-                  </p>
-                </div>
-
-                <div class="project-field">
-                  <h4 class="field-label font-mono">Tech Stack</h4>
-                  <ul class="tag-list" role="list">
-                    <!-- TODO: INSERT REAL PROJECT DATA -->
-                    <li class="tech-tag font-mono">[Python]</li>
-                    <li class="tech-tag font-mono">[TensorFlow / PyTorch]</li>
-                    <li class="tech-tag font-mono">[Local LLMs]</li>
-                    <li class="tech-tag font-mono">[GPU Compute]</li>
+                <div class="project-field-block">
+                  <span class="project-field-label font-mono">KEY ENGINEERING CONTRIBUTIONS</span>
+                  <ul class="project-highlights" role="list">
+                    <li>Designed and deployed relational schema and dispatch APIs for multi-depot bus allocation.</li>
+                    <li>Integrated real-time route assignment pipeline reducing schedule publishing turnaround.</li>
+                    <li>Structured audit logs and role-based access for depot superintendents and dispatch controllers.</li>
                   </ul>
                 </div>
 
-                <div class="project-field">
-                  <h4 class="field-label font-mono">Outcome</h4>
-                  <p class="field-value">
-                    <!-- TODO: INSERT REAL PROJECT DATA -->
-                    [Measurable results or verified engineering milestones achieved upon project delivery.]
-                  </p>
+                <div class="project-field-block">
+                  <span class="project-field-label font-mono">TECH STACK</span>
+                  <div class="tech-pills" role="list" aria-label="Technologies used in TNSTC Admin Portal">
+                    <span class="tech-pill font-mono" role="listitem">PostgreSQL</span>
+                    <span class="tech-pill font-mono" role="listitem">Node.js</span>
+                    <span class="tech-pill font-mono" role="listitem">REST APIs</span>
+                    <span class="tech-pill font-mono" role="listitem">Express</span>
+                    <span class="tech-pill font-mono" role="listitem">RBAC Architecture</span>
+                    <span class="tech-pill font-mono" role="listitem">Leaflet</span>
+                  </div>
+                </div>
+
+                <div class="project-outcome-box">
+                  <span class="outcome-label font-mono">KEY OUTCOME / IMPACT</span>
+                  <p class="outcome-text">Operational efficiency optimized across route rosters; centralized fleet scheduling across municipal divisions.</p>
                 </div>
 
                 <div class="project-actions">
-                  <!-- TODO: INSERT REAL PROJECT DATA -->
-                  <a href="https://github.com/25bcs010-lang" class="btn-secondary" target="_blank" rel="noopener noreferrer" aria-label="View Project 1 Source Code">
-                    Repository ↗
-                  </a>
-                  <a href="#projects" class="btn-primary" aria-label="View Project 1 Live Demo or Documentation">
-                    Live Demo ↗
+                  <a
+                    href="https://github.com/25bcs010-lang"
+                    class="btn-primary project-action-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="View TNSTC Admin Portal repository on GitHub"
+                  >
+                    <span>Repository</span>
+                    <span class="btn-arrow" aria-hidden="true">↗</span>
                   </a>
                 </div>
-              </div>
+              </div><!-- /project-card-content -->
+
+              <div class="project-card-media">
+                <div class="project-media-frame">
+                  <img
+                    src="images/project-one.png"
+                    alt="TNSTC Admin Portal bus scheduling and route management dashboard"
+                    class="project-img"
+                    loading="lazy"
+                    onerror="this.classList.add('is-fallback');"
+                  >
+                  <div class="media-fallback-blueprint" aria-hidden="true">
+                    <div class="blueprint-circuit-grid"></div>
+                    <div class="blueprint-badge font-mono">SYSTEM SPEC // CAD SCHEMATIC</div>
+                    <div class="blueprint-code font-mono">SYS-TNSTC-V1</div>
+                    <div class="blueprint-sub font-mono">MULTI-DEPOT FLEET DISPATCH CORE</div>
+                    <div class="blueprint-status font-mono">
+                      <span class="blueprint-dot"></span>
+                      <span>ASSET PENDING // CAD BLUEPRINT MODE</span>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- /project-card-media -->
             </article>
 
-            <!-- ==========================================
-                 PROJECT CASE STUDY 02
-            =========================================== -->
-            <!-- TODO: INSERT REAL PROJECT DATA -->
+            <!-- PROJECT 02 -->
             <article class="project-card" aria-labelledby="project-2-title">
-              <header class="project-card-header">
-                <span class="project-index font-mono">02 // CASE STUDY</span>
-                <h3 id="project-2-title" class="project-title">[Project Title Placeholder — e.g. GPU Accelerated Computer Vision]</h3>
-              </header>
-
-              <div class="project-media-frame" aria-label="Project 2 screenshot placeholder">
-                <div class="placeholder-graphic" aria-hidden="true">
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                    <circle cx="8.5" cy="8.5" r="1.5"/>
-                    <polyline points="21 15 16 10 5 21"/>
-                  </svg>
-                  <span class="font-mono placeholder-label">[Screenshot Placeholder — images/project-two.png]</span>
+              <div class="project-card-content">
+                <div class="project-tag-row">
+                  <span class="project-tag font-mono">02 // HEALTHCARE IOT &amp; TELEMETRY</span>
+                  <span class="project-status-dot" aria-hidden="true"></span>
                 </div>
-              </div>
+                <h3 id="project-2-title" class="project-card-title">IV Drip Nurse Monitor</h3>
+                <p class="project-card-subtitle font-mono">Automated Infusion Fluid Rate Telemetry &amp; Ward-Level Alerting Hardware-Software Stack</p>
 
-              <div class="project-body">
-                <div class="project-field">
-                  <h4 class="field-label font-mono">Problem</h4>
-                  <p class="field-value">
-                    <!-- TODO: INSERT REAL PROJECT DATA -->
-                    [Define the concrete technical challenge or system limitation addressed.]
+                <div class="project-field-block">
+                  <span class="project-field-label font-mono">PROBLEM STATEMENT</span>
+                  <p class="project-field-desc">
+                    In multi-bed hospital wards, continuous manual monitoring of gravity IV drips creates severe nurse fatigue and risks critical air embolism or backflow events when fluids run dry.
                   </p>
                 </div>
 
-                <div class="project-field">
-                  <h4 class="field-label font-mono">My Role</h4>
-                  <p class="field-value">
-                    <!-- TODO: INSERT REAL PROJECT DATA -->
-                    [Your contributions: e.g. Model inference optimization, pipeline engineering, test verification.]
-                  </p>
-                </div>
-
-                <div class="project-field">
-                  <h4 class="field-label font-mono">Tech Stack</h4>
-                  <ul class="tag-list" role="list">
-                    <!-- TODO: INSERT REAL PROJECT DATA -->
-                    <li class="tech-tag font-mono">[TensorFlow]</li>
-                    <li class="tech-tag font-mono">[CUDA / GPU]</li>
-                    <li class="tech-tag font-mono">[OpenCV]</li>
-                    <li class="tech-tag font-mono">[Vanilla JS]</li>
+                <div class="project-field-block">
+                  <span class="project-field-label font-mono">KEY ENGINEERING CONTRIBUTIONS</span>
+                  <ul class="project-highlights" role="list">
+                    <li>Engineered optical sensor firmware calculating drop frequency and remaining bag volume in real time.</li>
+                    <li>Implemented low-latency MQTT/WebSocket telemetry to push instant alerts to centralized nursing consoles.</li>
+                    <li>Designed threshold-based early warning thresholds with sound and visual urgency indicators.</li>
                   </ul>
                 </div>
 
-                <div class="project-field">
-                  <h4 class="field-label font-mono">Outcome</h4>
-                  <p class="field-value">
-                    <!-- TODO: INSERT REAL PROJECT DATA -->
-                    [Target outcomes, test pass rates, or efficiency gains observed.]
-                  </p>
+                <div class="project-field-block">
+                  <span class="project-field-label font-mono">TECH STACK</span>
+                  <div class="tech-pills" role="list" aria-label="Technologies used in IV Drip Nurse Monitor">
+                    <span class="tech-pill font-mono" role="listitem">ESP32 / C++</span>
+                    <span class="tech-pill font-mono" role="listitem">MQTT</span>
+                    <span class="tech-pill font-mono" role="listitem">WebSockets</span>
+                    <span class="tech-pill font-mono" role="listitem">IoT Telemetry</span>
+                    <span class="tech-pill font-mono" role="listitem">Embedded C</span>
+                    <span class="tech-pill font-mono" role="listitem">Node.js</span>
+                  </div>
+                </div>
+
+                <div class="project-outcome-box">
+                  <span class="outcome-label font-mono">KEY OUTCOME / IMPACT</span>
+                  <p class="outcome-text">Real-time drop telemetry with sub-second nurse desk notification, preventing gravity dry-out events.</p>
                 </div>
 
                 <div class="project-actions">
-                  <!-- TODO: INSERT REAL PROJECT DATA -->
-                  <a href="https://github.com/25bcs010-lang" class="btn-secondary" target="_blank" rel="noopener noreferrer" aria-label="View Project 2 Source Code">
-                    Repository ↗
-                  </a>
-                  <a href="#projects" class="btn-primary" aria-label="View Project 2 Documentation">
-                    Live Demo ↗
+                  <a
+                    href="https://github.com/25bcs010-lang"
+                    class="btn-primary project-action-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="View IV Drip Nurse Monitor repository on GitHub"
+                  >
+                    <span>Repository</span>
+                    <span class="btn-arrow" aria-hidden="true">↗</span>
                   </a>
                 </div>
-              </div>
+              </div><!-- /project-card-content -->
+
+              <div class="project-card-media">
+                <div class="project-media-frame">
+                  <img
+                    src="images/project-two.png"
+                    alt="IV Drip Nurse Monitor real-time ward telemetry dashboard"
+                    class="project-img"
+                    loading="lazy"
+                    onerror="this.classList.add('is-fallback');"
+                  >
+                  <div class="media-fallback-blueprint" aria-hidden="true">
+                    <div class="blueprint-circuit-grid"></div>
+                    <div class="blueprint-badge font-mono">HARDWARE SPEC // CAD SCHEMATIC</div>
+                    <div class="blueprint-code font-mono">IOT-IVDRIP-REV2</div>
+                    <div class="blueprint-sub font-mono">OPTICAL DROP TELEMETRY SENSOR</div>
+                    <div class="blueprint-status font-mono">
+                      <span class="blueprint-dot"></span>
+                      <span>ASSET PENDING // CAD BLUEPRINT MODE</span>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- /project-card-media -->
             </article>
 
-            <!-- ==========================================
-                 PROJECT CASE STUDY 03
-            =========================================== -->
-            <!-- TODO: INSERT REAL PROJECT DATA -->
+            <!-- PROJECT 03 -->
             <article class="project-card" aria-labelledby="project-3-title">
-              <header class="project-card-header">
-                <span class="project-index font-mono">03 // CASE STUDY</span>
-                <h3 id="project-3-title" class="project-title">[Project Title Placeholder — e.g. Autonomous Reasoning Agent]</h3>
-              </header>
-
-              <div class="project-media-frame" aria-label="Project 3 screenshot placeholder">
-                <div class="placeholder-graphic" aria-hidden="true">
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                    <circle cx="8.5" cy="8.5" r="1.5"/>
-                    <polyline points="21 15 16 10 5 21"/>
-                  </svg>
-                  <span class="font-mono placeholder-label">[Screenshot Placeholder — images/project-three.png]</span>
+              <div class="project-card-content">
+                <div class="project-tag-row">
+                  <span class="project-tag font-mono">03 // GEOSPATIAL INTELLIGENCE &amp; XAI</span>
+                  <span class="project-status-dot" aria-hidden="true"></span>
                 </div>
-              </div>
+                <h3 id="project-3-title" class="project-card-title">SatQuery AI</h3>
+                <p class="project-card-subtitle font-mono">Natural Language Earth Observation &amp; Bounding-Box Detection System (ISRO PS 26167)</p>
 
-              <div class="project-body">
-                <div class="project-field">
-                  <h4 class="field-label font-mono">Problem</h4>
-                  <p class="field-value">
-                    <!-- TODO: INSERT REAL PROJECT DATA -->
-                    [Problem context: e.g. Multi-step reasoning failures, hallucination mitigation, local tool execution.]
+                <div class="project-field-block">
+                  <span class="project-field-label font-mono">PROBLEM STATEMENT</span>
+                  <p class="project-field-desc">
+                    Satellite imagery catalogs (Bhuvan, Sentinel) require specialized GIS query knowledge, creating friction for civil disaster and infrastructure analysts needing immediate visual insights.
                   </p>
                 </div>
 
-                <div class="project-field">
-                  <h4 class="field-label font-mono">My Role</h4>
-                  <p class="field-value">
-                    <!-- TODO: INSERT REAL PROJECT DATA -->
-                    [System architect and primary engineer: prompt decomposition, fine-tuning datasets, agent loops.]
-                  </p>
-                </div>
-
-                <div class="project-field">
-                  <h4 class="field-label font-mono">Tech Stack</h4>
-                  <ul class="tag-list" role="list">
-                    <!-- TODO: INSERT REAL PROJECT DATA -->
-                    <li class="tech-tag font-mono">[Python]</li>
-                    <li class="tech-tag font-mono">[Fine-Tuned LLMs]</li>
-                    <li class="tech-tag font-mono">[Tool Interop]</li>
-                    <li class="tech-tag font-mono">[Git]</li>
+                <div class="project-field-block">
+                  <span class="project-field-label font-mono">KEY ENGINEERING CONTRIBUTIONS</span>
+                  <ul class="project-highlights" role="list">
+                    <li>Architected natural-language query parser translating user prompts into geospatial coordinates and spectral band queries.</li>
+                    <li>Integrated object detection models to pinpoint infrastructure, water bodies, and land-use anomalies.</li>
+                    <li>Implemented Explainable AI (XAI) bounding boxes and confidence heatmaps for ISRO challenge PS 26167.</li>
                   </ul>
                 </div>
 
-                <div class="project-field">
-                  <h4 class="field-label font-mono">Outcome</h4>
-                  <p class="field-value">
-                    <!-- TODO: INSERT REAL PROJECT DATA -->
-                    [Success metrics, deterministic step execution rate, and verified test scenarios.]
-                  </p>
+                <div class="project-field-block">
+                  <span class="project-field-label font-mono">TECH STACK</span>
+                  <div class="tech-pills" role="list" aria-label="Technologies used in SatQuery AI">
+                    <span class="tech-pill font-mono" role="listitem">Python</span>
+                    <span class="tech-pill font-mono" role="listitem">PyTorch / TensorFlow</span>
+                    <span class="tech-pill font-mono" role="listitem">Computer Vision</span>
+                    <span class="tech-pill font-mono" role="listitem">GeoJSON</span>
+                    <span class="tech-pill font-mono" role="listitem">FastAPI</span>
+                    <span class="tech-pill font-mono" role="listitem">XAI Heatmaps</span>
+                  </div>
+                </div>
+
+                <div class="project-outcome-box">
+                  <span class="outcome-label font-mono">KEY OUTCOME / IMPACT</span>
+                  <p class="outcome-text">Developed for ISRO National Hackathon PS 26167; automated complex multi-spectral queries down to natural conversation.</p>
                 </div>
 
                 <div class="project-actions">
-                  <!-- TODO: INSERT REAL PROJECT DATA -->
-                  <a href="https://github.com/25bcs010-lang" class="btn-secondary" target="_blank" rel="noopener noreferrer" aria-label="View Project 3 Source Code">
-                    Repository ↗
-                  </a>
-                  <a href="#projects" class="btn-primary" aria-label="View Project 3 Live Demo">
-                    Live Demo ↗
+                  <a
+                    href="https://github.com/25bcs010-lang"
+                    class="btn-primary project-action-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="View SatQuery AI repository on GitHub"
+                  >
+                    <span>Repository</span>
+                    <span class="btn-arrow" aria-hidden="true">↗</span>
                   </a>
                 </div>
-              </div>
+              </div><!-- /project-card-content -->
+
+              <div class="project-card-media">
+                <div class="project-media-frame">
+                  <img
+                    src="images/project-three.png"
+                    alt="SatQuery AI natural language satellite earth observation bounding-box detection"
+                    class="project-img"
+                    loading="lazy"
+                    onerror="this.classList.add('is-fallback');"
+                  >
+                  <div class="media-fallback-blueprint" aria-hidden="true">
+                    <div class="blueprint-circuit-grid"></div>
+                    <div class="blueprint-badge font-mono">MODEL PIPELINE // CAD SCHEMATIC</div>
+                    <div class="blueprint-code font-mono">ISRO-SATQUERY-XAI</div>
+                    <div class="blueprint-sub font-mono">SPECTRAL NLP &amp; BOUNDING DETECTOR</div>
+                    <div class="blueprint-status font-mono">
+                      <span class="blueprint-dot"></span>
+                      <span>ASSET PENDING // CAD BLUEPRINT MODE</span>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- /project-card-media -->
             </article>
 
-            <!-- ==========================================
-                 PROJECT CASE STUDY 04
-            =========================================== -->
-            <!-- TODO: INSERT REAL PROJECT DATA -->
+            <!-- PROJECT 04 -->
             <article class="project-card" aria-labelledby="project-4-title">
-              <header class="project-card-header">
-                <span class="project-index font-mono">04 // CASE STUDY</span>
-                <h3 id="project-4-title" class="project-title">[Project Title Placeholder — e.g. High-Performance Web Application]</h3>
-              </header>
-
-              <div class="project-media-frame" aria-label="Project 4 screenshot placeholder">
-                <div class="placeholder-graphic" aria-hidden="true">
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                    <circle cx="8.5" cy="8.5" r="1.5"/>
-                    <polyline points="21 15 16 10 5 21"/>
-                  </svg>
-                  <span class="font-mono placeholder-label">[Screenshot Placeholder — images/project-four.png]</span>
+              <div class="project-card-content">
+                <div class="project-tag-row">
+                  <span class="project-tag font-mono">04 // INDUSTRIAL EDGE AI &amp; COMPUTER VISION</span>
+                  <span class="project-status-dot" aria-hidden="true"></span>
                 </div>
-              </div>
+                <h3 id="project-4-title" class="project-card-title">AI-Powered Visual Defect Detection</h3>
+                <p class="project-card-subtitle font-mono">High-Throughput Surface Anomaly Classifier for Industrial Quality Control</p>
 
-              <div class="project-body">
-                <div class="project-field">
-                  <h4 class="field-label font-mono">Problem</h4>
-                  <p class="field-value">
-                    <!-- TODO: INSERT REAL PROJECT DATA -->
-                    [Define the user interface challenge, zero-runtime dependency requirement, or responsive layout objective.]
+                <div class="project-field-block">
+                  <span class="project-field-label font-mono">PROBLEM STATEMENT</span>
+                  <p class="project-field-desc">
+                    High-speed assembly lines experience manual inspection oversights and expensive defect leakage due to inspector eye fatigue and inconsistent micro-defect detection.
                   </p>
                 </div>
 
-                <div class="project-field">
-                  <h4 class="field-label font-mono">My Role</h4>
-                  <p class="field-value">
-                    <!-- TODO: INSERT REAL PROJECT DATA -->
-                    [Frontend engineering, WCAG AA accessibility compliance, GPU-composited motion architecture.]
-                  </p>
-                </div>
-
-                <div class="project-field">
-                  <h4 class="field-label font-mono">Tech Stack</h4>
-                  <ul class="tag-list" role="list">
-                    <!-- TODO: INSERT REAL PROJECT DATA -->
-                    <li class="tech-tag font-mono">[HTML5]</li>
-                    <li class="tech-tag font-mono">[CSS3 Grid &amp; Tokens]</li>
-                    <li class="tech-tag font-mono">[Vanilla ES6 JS]</li>
-                    <li class="tech-tag font-mono">[Vibe Coding]</li>
+                <div class="project-field-block">
+                  <span class="project-field-label font-mono">KEY ENGINEERING CONTRIBUTIONS</span>
+                  <ul class="project-highlights" role="list">
+                    <li>Trained lightweight convolutional neural network (CNN) pipeline on annotated manufacturing surface datasets.</li>
+                    <li>Optimized inference latency with INT8 quantization for real-time edge deployment on localized GPU hardware.</li>
+                    <li>Constructed reject-trigger signal dispatch with confidence scoring, false-positive filtering, and visual defect logs.</li>
                   </ul>
                 </div>
 
-                <div class="project-field">
-                  <h4 class="field-label font-mono">Outcome</h4>
-                  <p class="field-value">
-                    <!-- TODO: INSERT REAL PROJECT DATA -->
-                    [Lighthouse 100 score, lightweight bundle footprint, and cross-device verified responsiveness.]
-                  </p>
+                <div class="project-field-block">
+                  <span class="project-field-label font-mono">TECH STACK</span>
+                  <div class="tech-pills" role="list" aria-label="Technologies used in AI-Powered Visual Defect Detection">
+                    <span class="tech-pill font-mono" role="listitem">TensorFlow</span>
+                    <span class="tech-pill font-mono" role="listitem">OpenCV</span>
+                    <span class="tech-pill font-mono" role="listitem">CNN Architecture</span>
+                    <span class="tech-pill font-mono" role="listitem">Edge AI Quantization</span>
+                    <span class="tech-pill font-mono" role="listitem">Python</span>
+                    <span class="tech-pill font-mono" role="listitem">CUDA</span>
+                  </div>
+                </div>
+
+                <div class="project-outcome-box">
+                  <span class="outcome-label font-mono">KEY OUTCOME / IMPACT</span>
+                  <p class="outcome-text">Sub-50ms defect classification latency per frame with high micro-crack detection sensitivity.</p>
                 </div>
 
                 <div class="project-actions">
-                  <!-- TODO: INSERT REAL PROJECT DATA -->
-                  <a href="https://github.com/25bcs010-lang" class="btn-secondary" target="_blank" rel="noopener noreferrer" aria-label="View Project 4 Source Code">
-                    Repository ↗
-                  </a>
-                  <a href="#projects" class="btn-primary" aria-label="View Project 4 Live Demo">
-                    Live Demo ↗
+                  <a
+                    href="https://github.com/25bcs010-lang"
+                    class="btn-primary project-action-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="View AI-Powered Visual Defect Detection repository on GitHub"
+                  >
+                    <span>Repository</span>
+                    <span class="btn-arrow" aria-hidden="true">↗</span>
                   </a>
                 </div>
-              </div>
+              </div><!-- /project-card-content -->
+
+              <div class="project-card-media">
+                <div class="project-media-frame">
+                  <img
+                    src="images/project-four.png"
+                    alt="AI-Powered Visual Defect Detection real-time edge inference and anomaly classification"
+                    class="project-img"
+                    loading="lazy"
+                    onerror="this.classList.add('is-fallback');"
+                  >
+                  <div class="media-fallback-blueprint" aria-hidden="true">
+                    <div class="blueprint-circuit-grid"></div>
+                    <div class="blueprint-badge font-mono">EDGE CNN // CAD SCHEMATIC</div>
+                    <div class="blueprint-code font-mono">EDGE-VISION-QC</div>
+                    <div class="blueprint-sub font-mono">REAL-TIME SURFACE ANOMALY CLASSIFIER</div>
+                    <div class="blueprint-status font-mono">
+                      <span class="blueprint-dot"></span>
+                      <span>ASSET PENDING // CAD BLUEPRINT MODE</span>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- /project-card-media -->
             </article>
 
-          </div><!-- /projects-list -->
+          </div><!-- /projects-track -->
+        </div><!-- /projects-sticky-viewport -->
+      </div><!-- /projects-scroll-stage -->
 
-          <!-- BOTTOM GITHUB LINK BAR -->
-          <div class="projects-github-bar" role="region" aria-label="More projects on GitHub">
-            <div class="github-bar-content">
-              <span class="github-bar-title font-mono">Looking for more experiment repositories?</span>
-              <p class="github-bar-desc">Continuous builds, local prototypes, and research logs are maintained on GitHub.</p>
-            </div>
-            <a
-              href="https://github.com/25bcs010-lang"
-              class="btn-primary github-bar-btn"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="View Ashvanth's full repository catalog on GitHub"
-            >
-              github.com/25bcs010-lang ↗
-            </a>
-          </div>
+      <!-- CENTERED GITHUB RESEARCH REPOSITORY CALLOUT -->
+      <div class="projects-github-center" role="region" aria-label="More projects on GitHub">
+        <div class="projects-github-box">
+          <span class="github-box-tag font-mono">CONTINUOUS BUILDS &amp; RESEARCH LAB</span>
+          <h3 class="github-box-title">Looking for more experiment repositories?</h3>
+          <p class="github-box-desc">
+            Continuous builds, local agent prototypes, deep learning experiments, and hardware telemetry codebases are maintained live on GitHub.
+          </p>
+          <a
+            href="https://github.com/25bcs010-lang"
+            class="btn-primary github-box-btn"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View Ashvanth's full repository catalog on GitHub"
+          >
+            <span>github.com/25bcs010-lang</span>
+            <span class="btn-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
 
-        </div><!-- /projects-right -->
-
-      </div><!-- /projects-grid -->
     </section><!-- /#projects -->
 
     <!-- ==========================================================
