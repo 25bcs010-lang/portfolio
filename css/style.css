@@ -547,21 +547,23 @@ a {
 }
 .badge--msme {
   /* sits inside hero-left, positioned naturally in flow */
-  margin-top: var(--space-4);
+  margin-top:  var(--space-4);
+  will-change: transform;
 }
 .badge--floating {
   /* Floats over the hero-frame on desktop */
-  position: absolute;
-  bottom:   var(--space-6);
-  left:     50%;
-  transform: translateX(-50%);
+  position:    absolute;
+  bottom:      var(--space-6);
+  left:        50%;
+  transform:   translate3d(-50%, var(--parallax-y, 0px), 0);
   /* Float bob animation: transform only */
-  animation: badge-float 4s ease-in-out infinite;
-  z-index:  2;
+  animation:   badge-float 4s ease-in-out infinite;
+  z-index:     2;
+  will-change: transform;
 }
 @keyframes badge-float {
-  0%, 100% { transform: translateX(-50%) translateY(0);     }
-  50%       { transform: translateX(-50%) translateY(-6px);  }
+  0%, 100% { transform: translate3d(-50%, var(--parallax-y, 0px), 0);     }
+  50%       { transform: translate3d(-50%, calc(var(--parallax-y, 0px) - 6px), 0);  }
 }
 
 .badge-icon {
@@ -618,6 +620,7 @@ a {
   display:          flex;
   align-items:      center;
   justify-content:  center;
+  will-change:      transform;
 }
 
 /* Monogram centering */
@@ -732,8 +735,10 @@ a {
   /* Toolkit cells: show immediately without entry animation */
   .toolkit-cell { opacity: 1; transform: none; }
 
-  /* Kinetic bridge nodes: steady state */
+  /* Kinetic bridge: steady state and accessible static stage presentation */
   .knode { animation: none; opacity: 1; transform: none; }
+  .kinetic-stage:not(.is-active) { display: none !important; }
+  .kinetic-stage.is-active { opacity: 1 !important; transform: none !important; }
 
   /* Narrative words: fully illuminated */
   .word { opacity: 1 !important; }
@@ -1056,16 +1061,61 @@ a {
   line-height:    1;
 }
 
-/* SVG diagram wrapper: takes all remaining space between labels */
-.kinetic-diagram {
-  flex:      1;
-  min-width: 0;   /* prevents flex child from overflowing its container */
-  color:     var(--text-dark-muted);
+/* Kinetic stages container: stacks 3 stages in identical grid coordinate */
+.kinetic-stage-viewport {
+  flex:                  1;
+  min-width:             0;   /* prevents flex child from overflowing its container */
+  display:               grid;
+  grid-template-columns: 1fr;
+  grid-template-rows:    1fr;
+  align-items:           center;
+  color:                 var(--text-dark-muted);
 }
-.kinetic-diagram svg {
-  width:    100%;
-  height:   auto;
-  display:  block;
+
+.kinetic-stage {
+  grid-area:        1 / 1;
+  display:          flex;
+  flex-direction:   column;
+  gap:              var(--space-2);
+  opacity:          0;
+  transform:        scale(0.95);
+  pointer-events:   none;
+  transition:       opacity var(--transition-base), transform var(--transition-base);
+  will-change:      opacity, transform;
+}
+
+.kinetic-stage.is-active {
+  opacity:        1;
+  transform:      scale(1);
+  pointer-events: auto;
+}
+
+.kinetic-stage-header {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  gap:             var(--space-4);
+  flex-wrap:       wrap;
+}
+
+.kinetic-stage-tag {
+  font-size:      var(--text-xs);
+  color:          var(--accent);
+  font-weight:    700;
+  letter-spacing: 0.08em;
+}
+
+.kinetic-stage-desc {
+  font-size:   var(--text-xs);
+  color:       var(--text-dark-primary);
+  opacity:     0.7;
+  font-weight: 500;
+}
+
+.kinetic-stage-graphic svg {
+  width:   100%;
+  height:  auto;
+  display: block;
 }
 
 /* ---- Kinetic Node SVG Circles ---- */
@@ -1121,9 +1171,23 @@ a {
   /* Smaller narrative text on mobile */
   .illuminated-text { font-size: var(--text-lg); }
 
-  /* Kinetic bridge: compress on mobile */
-  .kinetic-bridge { padding: var(--space-8) 0; }
-  .kinetic-label  { letter-spacing: 0.04em; }
+  /* Kinetic bridge: compress and adapt on mobile */
+  .kinetic-bridge       { padding: var(--space-8) 0; }
+  .kinetic-bridge-inner {
+    flex-direction: column;
+    align-items:    stretch;
+    gap:            var(--space-4);
+  }
+  .kinetic-label {
+    letter-spacing: 0.04em;
+    font-size:      var(--text-2xl);
+    text-align:     center;
+  }
+  .kinetic-stage-header {
+    flex-direction: column;
+    align-items:    flex-start;
+    gap:            var(--space-1);
+  }
 }
 
 /* --- TABLET: 768px – 1023px — two col, sticky active --- */
@@ -2067,23 +2131,25 @@ a {
   transition:     transform var(--transition-base);
 }
 
-/* GPU-safe animated fill layer */
+/* GPU-safe animated fill layer — vertical tactile fill from bottom */
 .contact-row::before {
   content:          '';
   position:         absolute;
   inset:            0;
   background:       #161616;
-  transform:        scaleX(0);
-  transform-origin: left center;
+  transform:        scaleY(0);
+  transform-origin: bottom center;
   transition:       transform var(--transition-base);
   z-index:          -1;
 }
 
-.contact-row:hover {
+.contact-row:hover,
+.contact-row:focus-visible {
   transform: translateX(4px);
 }
-.contact-row:hover::before {
-  transform: scaleX(1);
+.contact-row:hover::before,
+.contact-row:focus-visible::before {
+  transform: scaleY(1);
 }
 
 .contact-row-left {
@@ -2113,7 +2179,8 @@ a {
   transition:  transform var(--transition-base);
 }
 
-.contact-row:hover .contact-row-arrow {
+.contact-row:hover .contact-row-arrow,
+.contact-row:focus-visible .contact-row-arrow {
   transform: translate(4px, -4px);
 }
 
@@ -2206,14 +2273,40 @@ a {
   gap:            var(--space-2);
 }
 
+/* Footer Nav Links with Tactile Vertical Fill & Translation */
 .footer-nav a {
-  font-size:  var(--text-xs);
-  color:      var(--text-dark-primary);
-  opacity:    0.5;
-  transition: opacity var(--transition-fast);
+  position:        relative;
+  display:         inline-block;
+  width:           fit-content;
+  font-size:       var(--text-xs);
+  color:           var(--text-dark-primary);
+  opacity:         0.6;
+  isolation:       isolate;
+  overflow:        hidden;
+  transition:      opacity var(--transition-fast), transform var(--transition-fast);
 }
-.footer-nav a:hover {
-  opacity: 1;
+
+.footer-nav a::before {
+  content:          '';
+  position:         absolute;
+  inset:            0;
+  background:       rgba(255, 255, 255, 0.08);
+  transform:        scaleY(0);
+  transform-origin: bottom;
+  transition:       transform var(--transition-fast);
+  z-index:          -1;
+  border-radius:    2px;
+}
+
+.footer-nav a:hover,
+.footer-nav a:focus-visible {
+  opacity:   1;
+  transform: translateX(3px);
+}
+
+.footer-nav a:hover::before,
+.footer-nav a:focus-visible::before {
+  transform: scaleY(1);
 }
 
 /* Footer Actions */

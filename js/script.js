@@ -99,6 +99,17 @@ const narrativeParagraph = document.getElementById('illuminated-narrative');
    access it without being passed it as a parameter every frame. */
 let wordSpans = [];
 
+/* DOM references for Hero Multi-Layer Parallax */
+const heroSection = document.getElementById('about');
+const heroFrame   = document.querySelector('.hero-frame');
+const badgeMsme   = document.querySelector('.badge--msme');
+const badgeSih    = document.querySelector('.badge--sih');
+
+/* DOM references for Kinetic Bridge 3-Stage Visual Scrubbing */
+const kineticBridge = document.querySelector('.kinetic-bridge');
+const kineticStages = document.querySelectorAll('.kinetic-stage');
+let currentActiveStage = 1;
+
 /* The "ticking" flag is the heart of the requestAnimationFrame
    debounce pattern. It prevents us from scheduling multiple rAF
    callbacks in a single frame when the scroll event fires rapidly. */
@@ -107,34 +118,43 @@ let ticking = false;
 /* ----------------------------------------------------------------
    STEP 2: Initialise — split text OR bypass for reduced-motion.
 ---------------------------------------------------------------- */
-if (narrativeParagraph) {
-
-  if (prefersReducedMotion) {
-    /* ── REDUCED-MOTION PATH ──────────────────────────────────────
-       Do NOT split or animate anything.
-       Simply ensure the full paragraph is fully visible (opacity 1).
-       CSS already handles animation disabling, but we make the
-       opacity explicit here as a belt-and-braces guarantee. */
+if (prefersReducedMotion) {
+  /* ── REDUCED-MOTION PATH ──────────────────────────────────────
+     Do NOT split or animate anything.
+     Simply ensure the full paragraph is fully visible (opacity 1).
+     CSS already handles animation disabling, but we make the
+     opacity explicit here as a belt-and-braces guarantee. */
+  if (narrativeParagraph) {
     narrativeParagraph.style.opacity = '1';
-
-  } else {
-    /* ── NORMAL PATH ──────────────────────────────────────────────
-       Split the paragraph text into individual word <span>s,
-       run one initial pass so words already on screen get the
-       correct opacity before the user even scrolls, then start
-       listening for scroll events. */
-
-    wordSpans = splitIntoWords(narrativeParagraph);
-
-    /* Initial pass — handles words visible on page load */
-    updateWordOpacities();
-
-    /* passive: true tells the browser "we will NEVER call
-       event.preventDefault() inside this listener".
-       The browser can then optimise scroll handling (e.g. start
-       scrolling before our JS code even runs), giving silky 60fps. */
-    window.addEventListener('scroll', onScroll, { passive: true });
   }
+  resetHeroParallax();
+} else {
+  /* ── NORMAL PATH ──────────────────────────────────────────────
+     Split the paragraph text into individual word <span>s,
+     run one initial pass so words already on screen get the
+     correct opacity before the user even scrolls, then start
+     listening for scroll events. */
+  if (narrativeParagraph) {
+    wordSpans = splitIntoWords(narrativeParagraph);
+  }
+
+  /* Initial pass — handles elements visible on initial page load */
+  renderScrollFrame();
+
+  /* passive: true tells the browser "we will NEVER call
+     event.preventDefault() inside this listener".
+     The browser can then optimise scroll handling (e.g. start
+     scrolling before our JS code even runs), giving silky 60fps. */
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* Window resize listener: resets parallax when transitioning to mobile */
+  window.addEventListener('resize', () => {
+    if (window.innerWidth < 768) {
+      resetHeroParallax();
+    } else {
+      updateHeroParallax();
+    }
+  }, { passive: true });
 }
 
 /* ----------------------------------------------------------------
@@ -178,33 +198,51 @@ function splitIntoWords(el) {
 
 
 /* ----------------------------------------------------------------
-   STEP 4: onScroll()
+   STEP 4: onScroll() & renderScrollFrame()
 
    Called by the 'scroll' event listener every time the page scrolls.
    The scroll event can fire MANY times per second (10–30+).
-   If we called updateWordOpacities() directly here, we'd run it far
-   more often than the screen can refresh (typically 60fps = every 16ms).
+   If we called layout/paint functions directly here, we'd run them
+   far more often than the screen can refresh (typically 60fps = every 16ms).
 
    The "ticking" pattern solves this:
    — On the first scroll event in a frame: set ticking = true,
-     schedule ONE requestAnimationFrame callback.
+     schedule ONE requestAnimationFrame callback to renderScrollFrame().
    — On subsequent scroll events in the SAME frame: ticking is
      already true, so we do nothing (skip the extra rAF call).
-   — When rAF fires and runs updateWordOpacities(): set ticking = false,
-     so the next scroll event in the NEXT frame can schedule a new rAF.
+   — When rAF fires and runs renderScrollFrame():
+     1. Updates word opacities (Philosophy narrative)
+     2. Updates hero multi-layer parallax offsets (Hero visual frame & badges)
+     3. Updates kinetic bridge 3-stage visual state cycling
+     Finally resets ticking = false, so the next frame can schedule anew.
 
-   Result: updateWordOpacities() runs at most ONCE per frame, perfectly
-   in sync with the display refresh rate. Never faster, never wasted.
+   Result: All scroll computations run at most ONCE per display refresh frame,
+   perfectly synchronised with the browser's compositor thread.
 ---------------------------------------------------------------- */
 function onScroll() {
   if (!ticking) {
     ticking = true;
     /* requestAnimationFrame(callback) schedules callback to run at the
        start of the NEXT paint frame. The browser guarantees this runs
-       at the right time — just before the screen refreshes.
-       It passes a timestamp argument (we don't use it here). */
-    requestAnimationFrame(updateWordOpacities);
+       at the right time — just before the screen refreshes. */
+    requestAnimationFrame(renderScrollFrame);
   }
+}
+
+function renderScrollFrame() {
+  /* 1. Scroll word illumination */
+  if (narrativeParagraph && wordSpans.length > 0) {
+    updateWordOpacities();
+  }
+
+  /* 2. Multi-layered Hero scroll parallax */
+  updateHeroParallax();
+
+  /* 3. Kinetic Bridge 3-stage visual scrubbing */
+  updateKineticBridge();
+
+  /* Reset the ticking flag so the next scroll event schedules a new frame */
+  ticking = false;
 }
 
 
@@ -319,10 +357,130 @@ function updateWordOpacities() {
   wordSpans.forEach((span, index) => {
     span.style.opacity = computed[index];
   });
+}
 
-  /* Reset the ticking flag so onScroll() can schedule the
-     next rAF call when the user scrolls again. */
-  ticking = false;
+
+/* ----------------------------------------------------------------
+   STEP 6: updateHeroParallax() & resetHeroParallax()
+
+   Multi-layered, scroll-linked parallax offsets applied strictly
+   via hardware-accelerated transform: translate3d(0, Ypx, 0).
+
+   Speed Ratios:
+   - Hero visual frame:  scrollY * -0.06 (moves slowly upward)
+   - Badge 1 (MSME):     scrollY * -0.12 (moves faster foreground)
+   - Badge 2 (SIH):      scrollY * -0.09 (mid-ground floating layer)
+
+   Guards:
+   - Active only on tablet/desktop viewports (window.innerWidth >= 768)
+   - Active only when prefers-reduced-motion is false
+   - Only calculated when the Hero (#about) is actively inside the viewport
+---------------------------------------------------------------- */
+function updateHeroParallax() {
+  if (prefersReducedMotion || window.innerWidth < 768) {
+    resetHeroParallax();
+    return;
+  }
+
+  if (!heroSection) return;
+
+  const rect = heroSection.getBoundingClientRect();
+  const vh   = window.innerHeight;
+
+  /* Bounded: compute only while hero is intersecting the viewport */
+  if (rect.bottom > 0 && rect.top < vh) {
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+    /* Multi-layered translation offsets */
+    const frameOffset = (scrollY * -0.06).toFixed(2);
+    const msmeOffset  = (scrollY * -0.12).toFixed(2);
+    const sihOffset   = (scrollY * -0.09).toFixed(2);
+
+    if (heroFrame) {
+      heroFrame.style.transform = `translate3d(0, ${frameOffset}px, 0)`;
+    }
+    if (badgeMsme) {
+      badgeMsme.style.transform = `translate3d(0, ${msmeOffset}px, 0)`;
+    }
+    if (badgeSih) {
+      /* Update custom property for continuous keyframe float integration */
+      badgeSih.style.setProperty('--parallax-y', `${sihOffset}px`);
+      badgeSih.style.transform = `translate3d(-50%, ${sihOffset}px, 0)`;
+    }
+  }
+}
+
+function resetHeroParallax() {
+  if (heroFrame && heroFrame.style.transform) {
+    heroFrame.style.transform = '';
+  }
+  if (badgeMsme && badgeMsme.style.transform) {
+    badgeMsme.style.transform = '';
+  }
+  if (badgeSih) {
+    if (badgeSih.style.getPropertyValue('--parallax-y')) {
+      badgeSih.style.removeProperty('--parallax-y');
+    }
+    if (badgeSih.style.transform) {
+      badgeSih.style.transform = '';
+    }
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   STEP 7: updateKineticBridge()
+
+   Scroll-scrubbed 3-stage visual state cycling across the Kinetic Bridge:
+   - Stage 01: [01 // DECONSTRUCT]             (progress: 0.00 – 0.33)
+   - Stage 02: [02 // LOCAL FINE-TUNING & GPU] (progress: 0.34 – 0.66)
+   - Stage 03: [03 // DETERMINISTIC EXECUTION] (progress: 0.67 – 1.00)
+
+   Math:
+   - Measures getBoundingClientRect() of .kinetic-bridge
+   - Progress formula maps rect.top from entry threshold (85% vh)
+     to exit threshold (20% vh)
+   - Mutates DOM only when stage transition occurs (prevents unnecessary reflows)
+   - Animates purely via CSS opacity and transform: scale() crossfade
+---------------------------------------------------------------- */
+function updateKineticBridge() {
+  if (!kineticBridge || kineticStages.length === 0) return;
+
+  if (prefersReducedMotion) return;
+
+  const rect = kineticBridge.getBoundingClientRect();
+  const vh   = window.innerHeight;
+
+  /* Skip calculation if bridge is completely outside the viewport */
+  if (rect.bottom < 0 || rect.top > vh) return;
+
+  /* Define comfort viewing window for scrubbing the 3 states */
+  const BRIDGE_ENTRY = vh * 0.85;
+  const BRIDGE_EXIT  = vh * 0.20;
+  const BRIDGE_SPAN  = BRIDGE_ENTRY - BRIDGE_EXIT;
+
+  const rawProgress = (BRIDGE_ENTRY - rect.top) / BRIDGE_SPAN;
+  const progress    = Math.min(1, Math.max(0, rawProgress));
+
+  /* Map progress thresholds */
+  let targetStage = 1;
+  if (progress >= 0.67) {
+    targetStage = 3;
+  } else if (progress >= 0.34) {
+    targetStage = 2;
+  } else {
+    targetStage = 1;
+  }
+
+  /* Transition stages if active index has changed */
+  if (targetStage !== currentActiveStage) {
+    currentActiveStage = targetStage;
+    kineticStages.forEach((stage, idx) => {
+      const isTarget = (idx + 1) === targetStage;
+      stage.classList.toggle('is-active', isTarget);
+      stage.setAttribute('aria-hidden', String(!isTarget));
+    });
+  }
 }
 
 
