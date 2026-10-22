@@ -2,6 +2,7 @@
    ASHVANTH P S — script.js
    Phase 1: Mobile Navigation Toggle
    Phase 2: Scroll Word-Illumination (rAF + getBoundingClientRect)
+   Phase 3: Certificate Lightbox Modal (Accessible Vanilla ES6)
 ================================================================ */
 
 'use strict';
@@ -320,4 +321,110 @@ function updateWordOpacities() {
   /* Reset the ticking flag so onScroll() can schedule the
      next rAF call when the user scrolls again. */
   ticking = false;
+}
+
+
+/* ================================================================
+   PHASE 3 — CERTIFICATE LIGHTBOX MODAL
+   Pure Vanilla ES6 implementation:
+   - Full keyboard accessibility (focus trap, Escape to close)
+   - Focus restoration to the triggering button upon dismissal
+   - Backdrop click detection
+   - Fallback frame if local certificate image is pending
+================================================================ */
+
+const certModal = document.getElementById('certificate-modal');
+const certCloseBtn = document.querySelector('.cert-modal-close');
+const modalImg = document.getElementById('modal-cert-img');
+const modalFallback = document.getElementById('modal-cert-fallback');
+const modalTitle = document.getElementById('modal-cert-title');
+const modalSubtitle = document.getElementById('modal-cert-subtitle');
+const certButtons = document.querySelectorAll('.cert-preview-btn');
+
+let lastActiveTrigger = null;
+
+if (certModal && certCloseBtn && modalImg && modalTitle && modalSubtitle) {
+
+  /* Open Modal Function */
+  function openCertModal(btn) {
+    lastActiveTrigger = btn;
+
+    const certSrc = btn.getAttribute('data-cert-src');
+    const certTitle = btn.getAttribute('data-cert-title') || 'Certificate Preview';
+    const certSubtitle = btn.getAttribute('data-cert-subtitle') || '';
+
+    modalTitle.textContent = certTitle;
+    modalSubtitle.textContent = certSubtitle;
+
+    /* Reset image state */
+    modalImg.classList.remove('is-loaded');
+    if (modalFallback) {
+      modalFallback.style.display = 'flex';
+    }
+
+    /* Test loading the certificate image */
+    if (certSrc) {
+      const tester = new Image();
+      tester.onload = () => {
+        modalImg.src = certSrc;
+        modalImg.classList.add('is-loaded');
+        if (modalFallback) {
+          modalFallback.style.display = 'none';
+        }
+      };
+      tester.onerror = () => {
+        /* Keep fallback placeholder visible */
+        modalImg.classList.remove('is-loaded');
+        if (modalFallback) {
+          modalFallback.style.display = 'flex';
+        }
+      };
+      tester.src = certSrc;
+    }
+
+    /* Reveal modal dialog */
+    certModal.setAttribute('aria-hidden', 'false');
+    certModal.classList.add('is-active');
+    document.body.style.overflow = 'hidden'; /* freeze body scroll */
+
+    /* Move focus to close button for immediate keyboard accessibility */
+    certCloseBtn.focus();
+  }
+
+  /* Close Modal Function */
+  function closeCertModal() {
+    if (!certModal.classList.contains('is-active')) return;
+
+    certModal.setAttribute('aria-hidden', 'true');
+    certModal.classList.remove('is-active');
+    document.body.style.overflow = ''; /* restore body scroll */
+
+    /* Restore focus to the button that triggered the modal */
+    if (lastActiveTrigger) {
+      lastActiveTrigger.focus();
+      lastActiveTrigger = null;
+    }
+  }
+
+  /* Attach click listeners to all certificate preview buttons */
+  certButtons.forEach(btn => {
+    btn.addEventListener('click', () => openCertModal(btn));
+  });
+
+  /* Close on close button click */
+  certCloseBtn.addEventListener('click', closeCertModal);
+
+  /* Close on backdrop click (clicking outside the modal card) */
+  certModal.addEventListener('click', (event) => {
+    if (event.target === certModal) {
+      closeCertModal();
+    }
+  });
+
+  /* Close on Escape key */
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && certModal.classList.contains('is-active')) {
+      closeCertModal();
+    }
+  });
 }
