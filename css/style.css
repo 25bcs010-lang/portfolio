@@ -728,4 +728,165 @@ a {
   /* Reveal all animated/hidden content immediately */
   .badge--floating { animation: none; transform: translateX(-50%); }
   .status-dot      { animation: none; }
+
+  /* Toolkit cells: show immediately without entry animation */
+  .toolkit-cell { opacity: 1; transform: none; }
+}
+
+
+/* ================================================================
+   SECTION 10: TOOLKIT SECTION (#toolkit)
+   4×2 hairline-bordered monochrome grid.
+   Responsive: 4-col desktop → 2-col tablet → 1-col mobile.
+================================================================ */
+
+/* Section-level layout */
+.toolkit-section { padding-bottom: var(--space-24); }
+
+/* ---- Section Header Row ---- */
+.toolkit-header {
+  display:         flex;
+  align-items:     flex-end;
+  justify-content: space-between;
+  gap:             var(--space-8);
+  padding-bottom:  var(--space-10);
+  border-bottom:   1px solid var(--border-light);
+  margin-bottom:   0; /* grid top border acts as separator */
+}
+
+/* Small eyebrow index label */
+.section-eyebrow {
+  display:        block;
+  font-size:      var(--text-xs);
+  letter-spacing: 0.1em;
+  color:          var(--text-muted);
+  margin-bottom:  var(--space-2);
+}
+
+.toolkit-title {
+  font-size:      var(--text-2xl);
+  font-weight:    700;
+  letter-spacing: -0.02em;
+  line-height:    1.15;
+  color:          var(--text-primary);
+}
+
+.toolkit-descriptor {
+  font-size:  var(--text-base);
+  color:      var(--text-muted);
+  line-height: 1.6;
+  max-width:  36ch;
+  flex-shrink: 0;
+}
+
+/* ---- 4×2 Grid ---- */
+/* CSS Grid: 4 equal columns, hairline borders on all cells.
+   The "hairline" effect is achieved by removing the gap (gap: 0)
+   and drawing borders only on the right and bottom of each cell.
+   The top and left borders are applied to the grid container itself,
+   so cells never double-up borders. */
+.toolkit-grid {
+  display:               grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:                   0;
+  border-top:            1px solid var(--border-light);
+  border-left:           1px solid var(--border-light);
+}
+
+/* Each cell: right border + bottom border = hairline grid on all sides */
+.toolkit-cell {
+  border-right:  1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  /* Entry animation: cells slide up + fade in on load
+     Animation uses transform + opacity only ✅ */
+  opacity:   0;
+  transform: translateY(12px);
+  animation: cell-enter 0.5s ease forwards;
+}
+/* Stagger each cell's entry delay: nth-child offsets by 60ms per cell */
+.toolkit-cell:nth-child(1) { animation-delay:  0ms; }
+.toolkit-cell:nth-child(2) { animation-delay:  60ms; }
+.toolkit-cell:nth-child(3) { animation-delay: 120ms; }
+.toolkit-cell:nth-child(4) { animation-delay: 180ms; }
+.toolkit-cell:nth-child(5) { animation-delay: 240ms; }
+.toolkit-cell:nth-child(6) { animation-delay: 300ms; }
+.toolkit-cell:nth-child(7) { animation-delay: 360ms; }
+.toolkit-cell:nth-child(8) { animation-delay: 420ms; }
+
+@keyframes cell-enter {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Cell inner padding: provides breathing room */
+.toolkit-cell-inner {
+  padding:        var(--space-8) var(--space-6);
+  height:         100%;
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-4);
+  /* Hover lift: transform + opacity only ✅ */
+  transition:     transform  var(--transition-base),
+                  opacity    var(--transition-base);
+}
+.toolkit-cell:hover .toolkit-cell-inner {
+  transform: translateY(-2px);
+}
+
+/* ---- Cell Icon ---- */
+/* Icons are inline SVGs drawn from scratch.
+   We size them using width/height on the SVG element itself,
+   and color them with currentColor so they inherit the cell's text color. */
+.toolkit-icon {
+  width:  32px;
+  height: 32px;
+  color:  var(--text-primary);  /* currentColor in SVG inherits this */
+  flex-shrink: 0;
+}
+
+/* ---- Cell Text ---- */
+.toolkit-name {
+  font-size:   var(--text-base);
+  font-weight: 700;
+  color:       var(--text-primary);
+  line-height: 1.3;
+}
+
+.toolkit-desc {
+  font-size:   var(--text-sm);
+  color:       var(--text-muted);
+  line-height: 1.6;
+  /* Clamp description to 3 lines — keeps all cells uniform height */
+  display:            -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow:           hidden;
+}
+
+
+/* ================================================================
+   SECTION 11: TOOLKIT RESPONSIVE OVERRIDES
+================================================================ */
+
+/* --- MOBILE: < 768px — single column --- */
+@media (max-width: 767.98px) {
+  .toolkit-header {
+    flex-direction: column;
+    align-items:    flex-start;
+    gap:            var(--space-4);
+  }
+  .toolkit-descriptor { max-width: 100%; }
+
+  /* 1-column grid on mobile */
+  .toolkit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .toolkit-cell-inner { padding: var(--space-6) var(--space-5); }
+}
+
+/* --- TABLET: 768px – 1023px — two columns --- */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .toolkit-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
