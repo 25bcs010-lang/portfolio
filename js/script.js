@@ -1,7 +1,7 @@
 /* ================================================================
    ASHVANTH P S — script.js
    Phase 1: Mobile Navigation Toggle
-   Future phases will add: IntersectionObserver, live clock, etc.
+   Phase 2: Scroll Word-Illumination (rAF + getBoundingClientRect)
 ================================================================ */
 
 'use strict';
@@ -63,4 +63,261 @@ if (navToggle && mobileNav) {
       navToggle.focus();
     }
   });
+}
+
+
+/* ================================================================
+   PHASE 2 — SCROLL WORD ILLUMINATION
+   Technique: scroll event → requestAnimationFrame → getBoundingClientRect()
+   Each word in #illuminated-narrative fades from opacity 0.25 → 1.0
+   as it enters the comfortable reading zone of the viewport.
+================================================================ */
+
+/* ----------------------------------------------------------------
+   STEP 0: Check prefers-reduced-motion BEFORE doing any work.
+
+   window.matchMedia() is the JS equivalent of a CSS @media query.
+   It returns a MediaQueryList object. .matches is a boolean.
+
+   If true, the user has OS-level "Reduce Motion" enabled.
+   We must NOT animate anything, and must reveal all text immediately.
+---------------------------------------------------------------- */
+const prefersReducedMotion = window.matchMedia(
+  '(prefers-reduced-motion: reduce)'
+).matches;
+
+/* ----------------------------------------------------------------
+   STEP 1: Target the narrative paragraph in the DOM.
+---------------------------------------------------------------- */
+const narrativeParagraph = document.getElementById('illuminated-narrative');
+
+/* Array that will hold references to all the word <span> elements.
+   We declare it here (outer scope) so updateWordOpacities() can
+   access it without being passed it as a parameter every frame. */
+let wordSpans = [];
+
+/* The "ticking" flag is the heart of the requestAnimationFrame
+   debounce pattern. It prevents us from scheduling multiple rAF
+   callbacks in a single frame when the scroll event fires rapidly. */
+let ticking = false;
+
+/* ----------------------------------------------------------------
+   STEP 2: Initialise — split text OR bypass for reduced-motion.
+---------------------------------------------------------------- */
+if (narrativeParagraph) {
+
+  if (prefersReducedMotion) {
+    /* ── REDUCED-MOTION PATH ──────────────────────────────────────
+       Do NOT split or animate anything.
+       Simply ensure the full paragraph is fully visible (opacity 1).
+       CSS already handles animation disabling, but we make the
+       opacity explicit here as a belt-and-braces guarantee. */
+    narrativeParagraph.style.opacity = '1';
+
+  } else {
+    /* ── NORMAL PATH ──────────────────────────────────────────────
+       Split the paragraph text into individual word <span>s,
+       run one initial pass so words already on screen get the
+       correct opacity before the user even scrolls, then start
+       listening for scroll events. */
+
+    wordSpans = splitIntoWords(narrativeParagraph);
+
+    /* Initial pass — handles words visible on page load */
+    updateWordOpacities();
+
+    /* passive: true tells the browser "we will NEVER call
+       event.preventDefault() inside this listener".
+       The browser can then optimise scroll handling (e.g. start
+       scrolling before our JS code even runs), giving silky 60fps. */
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+}
+
+/* ----------------------------------------------------------------
+   STEP 3: splitIntoWords(element)
+
+   Takes a paragraph element.
+   1. Reads its raw text (textContent — strips HTML tags).
+   2. Splits on whitespace (/\s+/ matches any run of spaces/newlines).
+   3. Rebuilds innerHTML as: word1 <span>word2</span> word3 ...
+      — each word wrapped in <span class="word"> starts at opacity 0.25.
+      — words are joined with a literal space character so line-
+        wrapping works correctly (the space is between spans, not inside).
+   4. Returns a plain Array of the span elements (via Array.from).
+
+   NOTE: Replacing innerHTML removes the original text node. Screen
+   readers encounter the <span> elements as inline text — semantically
+   identical to the original paragraph — so accessibility is preserved.
+---------------------------------------------------------------- */
+function splitIntoWords(el) {
+  /* textContent reads the raw text, ignoring all HTML tags.
+     .trim() removes leading/trailing whitespace/newlines. */
+  const rawText = el.textContent.trim();
+
+  /* Split on one or more whitespace characters.
+     /\s+/ covers: spaces, tabs, newlines (our HTML has newlines in it).
+     .filter(Boolean) removes any empty strings from the array. */
+  const words = rawText.split(/\s+/).filter(Boolean);
+
+  /* Rebuild innerHTML: each word in its own span.
+     map()   → transforms each word string into a <span> HTML string.
+     join(' ') → joins them with a real space between each span
+               (this space is what the browser uses for word-wrap). */
+  el.innerHTML = words
+    .map(w => `<span class="word">${w}</span>`)
+    .join(' ');
+
+  /* querySelectorAll returns a NodeList — Array.from() converts it
+     to a real Array so we can use .map() and .forEach() later. */
+  return Array.from(el.querySelectorAll('.word'));
+}
+
+
+/* ----------------------------------------------------------------
+   STEP 4: onScroll()
+
+   Called by the 'scroll' event listener every time the page scrolls.
+   The scroll event can fire MANY times per second (10–30+).
+   If we called updateWordOpacities() directly here, we'd run it far
+   more often than the screen can refresh (typically 60fps = every 16ms).
+
+   The "ticking" pattern solves this:
+   — On the first scroll event in a frame: set ticking = true,
+     schedule ONE requestAnimationFrame callback.
+   — On subsequent scroll events in the SAME frame: ticking is
+     already true, so we do nothing (skip the extra rAF call).
+   — When rAF fires and runs updateWordOpacities(): set ticking = false,
+     so the next scroll event in the NEXT frame can schedule a new rAF.
+
+   Result: updateWordOpacities() runs at most ONCE per frame, perfectly
+   in sync with the display refresh rate. Never faster, never wasted.
+---------------------------------------------------------------- */
+function onScroll() {
+  if (!ticking) {
+    ticking = true;
+    /* requestAnimationFrame(callback) schedules callback to run at the
+       start of the NEXT paint frame. The browser guarantees this runs
+       at the right time — just before the screen refreshes.
+       It passes a timestamp argument (we don't use it here). */
+    requestAnimationFrame(updateWordOpacities);
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   STEP 5: updateWordOpacities()
+
+   The core math. Called by requestAnimationFrame — so it runs
+   at most once per display refresh frame (60fps on most screens).
+
+   HOW getBoundingClientRect() WORKS:
+   ─────────────────────────────────
+   rect = element.getBoundingClientRect()
+
+   Returns a DOMRect object with properties:
+     rect.top    → pixels from the viewport TOP EDGE to the element TOP
+     rect.bottom → pixels from the viewport TOP EDGE to the element BOTTOM
+     rect.left   → pixels from the viewport LEFT EDGE to the element LEFT
+     rect.height → element's height in pixels
+
+   KEY INSIGHT about rect.top:
+     rect.top = 800  → element is 800px below the top of the viewport
+                        (it's BELOW the fold — not yet visible)
+     rect.top = 400  → element is 400px from the top (visible, midscreen)
+     rect.top = 0    → element's top is exactly AT the viewport top edge
+     rect.top = -100 → element's top is 100px ABOVE the viewport
+                        (user has already scrolled PAST it)
+
+   As the user scrolls DOWN:
+     → rect.top DECREASES (element moves up toward the viewport top)
+
+   THE ILLUMINATION ZONE:
+   ──────────────────────
+   We define two threshold values as fractions of viewport height (vh):
+
+     ZONE_START = vh × 0.85   (85% down from viewport top — near bottom)
+     ZONE_END   = vh × 0.25   (25% down from viewport top — comfortable read zone)
+
+   A word begins illuminating when rect.top crosses ZONE_START (entering
+   the bottom of the screen) and finishes when rect.top reaches ZONE_END
+   (sitting in the comfortable upper reading area).
+
+   PROGRESS FORMULA:
+   ─────────────────
+     rawProgress = (ZONE_START − rect.top) / (ZONE_START − ZONE_END)
+
+   Let's verify with boundary values:
+
+   When rect.top = ZONE_START (word just entering illumination zone):
+     rawProgress = (ZONE_START − ZONE_START) / ZONE_SIZE = 0 / ZONE_SIZE = 0
+
+   When rect.top = ZONE_END (word at comfortable reading position):
+     rawProgress = (ZONE_START − ZONE_END) / ZONE_SIZE = ZONE_SIZE / ZONE_SIZE = 1
+
+   When rect.top > ZONE_START (word below fold, not yet visible):
+     numerator is negative → rawProgress < 0 → Math.max(0, ...) clamps to 0
+
+   When rect.top < ZONE_END (word above reading zone, already read):
+     numerator > ZONE_SIZE → rawProgress > 1 → Math.min(1, ...) clamps to 1
+
+   OPACITY MAPPING (linear interpolation):
+   ────────────────────────────────────────
+     opacity = 0.25 + progress × 0.75
+
+   progress = 0 → opacity = 0.25 + 0 × 0.75 = 0.25  (dim — word is below fold)
+   progress = 1 → opacity = 0.25 + 1 × 0.75 = 1.00  (bright — word is being read)
+
+   This is the standard lerp formula: lerp(a, b, t) = a + t × (b − a)
+   Here: lerp(0.25, 1.0, t) = 0.25 + t × 0.75
+
+   PERFORMANCE — avoiding layout thrashing:
+   ─────────────────────────────────────────
+   We separate all DOM READS from all DOM WRITES into two phases.
+   Reading the DOM (getBoundingClientRect) and writing the DOM
+   (style.opacity) in an interleaved loop forces the browser to
+   recalculate layout after every write — this is "layout thrashing".
+
+   Our approach:
+     Phase 1: Read ALL rects → calculate ALL opacities → store in array.
+     Phase 2: Write ALL opacities from the array.
+   This way the browser only calculates layout ONCE per frame.
+---------------------------------------------------------------- */
+function updateWordOpacities() {
+  const vh = window.innerHeight;  /* viewport height in CSS pixels */
+
+  /* ── DEFINE THE ILLUMINATION ZONE ── */
+  const ZONE_START = vh * 0.85;              /* 85% down — enter zone */
+  const ZONE_END   = vh * 0.25;              /* 25% down — fully read  */
+  const ZONE_SIZE  = ZONE_START - ZONE_END;  /* size of the transition band */
+
+  /* ── PHASE 1: BATCH READ ── */
+  /* Map each span to its computed opacity — NO DOM WRITES here. */
+  const computed = wordSpans.map(span => {
+    /* getBoundingClientRect() triggers a layout read.
+       Doing all reads together (before any writes) means the browser
+       only needs to compute layout ONCE for this entire batch. */
+    const rect    = span.getBoundingClientRect();
+    const wordTop = rect.top;  /* distance from viewport top to this word's top */
+
+    /* Progress: 0 (below fold) → 1 (in reading zone) */
+    const rawProgress = (ZONE_START - wordTop) / ZONE_SIZE;
+    const progress    = Math.min(1, Math.max(0, rawProgress));  /* clamp [0, 1] */
+
+    /* Lerp: 0.25 at progress=0, 1.0 at progress=1 */
+    return (0.25 + progress * 0.75).toFixed(3);
+    /* toFixed(3) rounds to 3 decimal places — enough precision,
+       avoids floating-point noise like 0.9999999997 */
+  });
+
+  /* ── PHASE 2: BATCH WRITE ── */
+  /* Apply all computed opacities. Because all reads are done,
+     these writes don't trigger any additional layout calculations. */
+  wordSpans.forEach((span, index) => {
+    span.style.opacity = computed[index];
+  });
+
+  /* Reset the ticking flag so onScroll() can schedule the
+     next rAF call when the user scrolls again. */
+  ticking = false;
 }

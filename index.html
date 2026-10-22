@@ -356,9 +356,153 @@
       </div>
     </section><!-- /#toolkit -->
 
-    <section id="philosophy" class="section section--dark" aria-label="Engineering philosophy">
-      <!-- Phase 2 -->
-    </section>
+    <!-- ==========================================================
+         SECTION 3 — ENGINEERING PHILOSOPHY (#philosophy)
+         Dark theme | Left: sticky Reasoning Manifesto
+                    | Right: scroll-illuminated narrative
+         Followed by: full-width Kinetic Bridge
+    ========================================================== -->
+    <section id="philosophy" class="section--dark philosophy-section" aria-labelledby="philosophy-heading">
+
+      <!-- Asymmetric 12-col grid: manifesto left, narrative right -->
+      <div class="container philosophy-grid">
+
+        <!-- LEFT RAIL: sticky Reasoning Manifesto (cols 1–4) -->
+        <aside class="philosophy-left" aria-label="Engineering philosophy manifesto">
+          <div class="philosophy-sticky">
+
+            <div class="philosophy-eyebrow">
+              <span class="section-eyebrow font-mono" aria-hidden="true">03 /</span>
+              <h2 id="philosophy-heading" class="philosophy-heading">
+                How I Think
+              </h2>
+            </div>
+
+            <!-- Manifesto: 3 core principles -->
+            <div class="manifesto" aria-label="Three core principles">
+              <p class="manifesto-line">Deconstruct first.</p>
+              <p class="manifesto-line">Build the mental model.</p>
+              <p class="manifesto-line">Then execute precisely.</p>
+            </div>
+
+            <!-- Accent rule: decorative only -->
+            <div class="manifesto-rule" aria-hidden="true"></div>
+
+            <!-- Sub-label -->
+            <p class="manifesto-note font-mono">
+              Reasoning before code.<br/>
+              Every. Single. Time.
+            </p>
+
+          </div>
+        </aside><!-- /philosophy-left -->
+
+        <!-- RIGHT COLUMN: scroll-illuminated narrative (cols 5–12) -->
+        <div class="philosophy-right">
+
+          <!-- JS splits this paragraph into <span class="word"> elements.
+               Each word's opacity is driven from 0.25 → 1.0 by
+               getBoundingClientRect() + requestAnimationFrame as you scroll. -->
+          <p
+            id="illuminated-narrative"
+            class="illuminated-text"
+            aria-label="Engineering philosophy narrative"
+          >
+            Every system I build begins with a single question I refuse to
+            skip: what is the actual problem here? Not the surface symptom —
+            the root cause. I deconstruct requirements into their smallest
+            logical units, trace every dependency, and construct a complete
+            mental model before writing a single line of code. This is not
+            slowness. This is the discipline that makes the build phase fast
+            and the shipped product correct. I fine-tune AI agents locally
+            because I want to understand the weights, not just call an API.
+            I work at the GPU level because I want to understand the
+            parallelism, not just abstract it away. Understanding the machine —
+            all the way down — is how I build systems that keep working when
+            the abstractions break.
+          </p>
+
+        </div><!-- /philosophy-right -->
+
+      </div><!-- /philosophy-grid -->
+
+
+      <!-- ========================================================
+           KINETIC BRIDGE
+           Full section-width row: LOGIC [SVG signal diagram] EXECUTION
+           SVG drawn from scratch — no icon library.
+           Node pulse animation: transform + opacity only ✅
+      ======================================================== -->
+      <div class="kinetic-bridge" aria-label="From logic to execution">
+        <div class="kinetic-bridge-inner container">
+
+          <!-- Left label -->
+          <span class="kinetic-label kinetic-label--left font-mono" aria-hidden="true">
+            LOGIC
+          </span>
+
+          <!-- Dynamic SVG Signal Diagram — inline, zero external assets -->
+          <div class="kinetic-diagram" aria-hidden="true" role="presentation">
+            <svg
+              viewBox="0 0 600 64"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              focusable="false"
+            >
+              <!-- Base hairline connecting all nodes -->
+              <line
+                x1="20" y1="32" x2="580" y2="32"
+                stroke="currentColor" stroke-width="0.75" opacity="0.2"
+              />
+
+              <!-- Node 1 -->
+              <circle class="knode knode-1" cx="80"  cy="32" r="4" fill="currentColor"/>
+
+              <!-- Node 2 -->
+              <circle class="knode knode-2" cx="195" cy="32" r="4" fill="currentColor"/>
+
+              <!-- Node 3: centre — double ring to mark the midpoint -->
+              <circle cx="300" cy="32" r="12"
+                stroke="currentColor" stroke-width="0.75" opacity="0.2"/>
+              <circle cx="300" cy="32" r="7"
+                stroke="currentColor" stroke-width="0.75" opacity="0.35"/>
+              <circle class="knode knode-3" cx="300" cy="32" r="4" fill="currentColor"/>
+
+              <!-- Micro label above centre node -->
+              <text
+                x="300" y="14"
+                text-anchor="middle"
+                font-family="JetBrains Mono, monospace"
+                font-size="7"
+                fill="currentColor"
+                opacity="0.4"
+                letter-spacing="1"
+              >SIGNAL</text>
+
+              <!-- Node 4 -->
+              <circle class="knode knode-4" cx="405" cy="32" r="4" fill="currentColor"/>
+
+              <!-- Node 5 -->
+              <circle class="knode knode-5" cx="520" cy="32" r="4" fill="currentColor"/>
+
+              <!-- Arrow head at the right end -->
+              <polyline
+                points="572,26 580,32 572,38"
+                stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                stroke-linejoin="round" opacity="0.5"
+              />
+            </svg>
+          </div><!-- /kinetic-diagram -->
+
+          <!-- Right label -->
+          <span class="kinetic-label kinetic-label--right font-mono" aria-hidden="true">
+            EXECUTION
+          </span>
+
+        </div><!-- /kinetic-bridge-inner -->
+      </div><!-- /kinetic-bridge -->
+
+    </section><!-- /#philosophy -->
 
     <section id="projects" class="section section--light" aria-label="Selected projects">
       <!-- Phase 3 -->

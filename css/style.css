@@ -731,6 +731,12 @@ a {
 
   /* Toolkit cells: show immediately without entry animation */
   .toolkit-cell { opacity: 1; transform: none; }
+
+  /* Kinetic bridge nodes: steady state */
+  .knode { animation: none; opacity: 1; transform: none; }
+
+  /* Narrative words: fully illuminated */
+  .word { opacity: 1 !important; }
 }
 
 
@@ -889,4 +895,237 @@ a {
   .toolkit-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+
+/* ================================================================
+   SECTION 12: PHILOSOPHY SECTION (#philosophy)
+   Dark theme | Sticky left rail + scroll-illuminated right column
+   + Full-width Kinetic Bridge at the bottom
+================================================================ */
+
+/* Override default .section padding — we manage spacing manually
+   so the kinetic bridge can sit flush at the bottom edge */
+.philosophy-section {
+  padding:   0;
+  overflow:  visible;  /* sticky requires overflow != hidden on ancestors */
+}
+
+/* ---- 12-col asymmetric grid ---- */
+/* align-items: start is CRITICAL for position: sticky to work.
+   If align-items were 'stretch' (the default), both columns would
+   be equal height and sticky would never trigger. 'start' lets the
+   right column grow taller than the left, so the left sticks. */
+.philosophy-grid {
+  display:               grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap:                   var(--space-8);
+  padding:               var(--space-24) var(--container-pad);
+  max-width:             var(--max-width);
+  margin:                0 auto;
+  align-items:           start;  /* ← makes sticky work */
+}
+
+/* ---- LEFT RAIL: cols 1–4 ---- */
+.philosophy-left {
+  grid-column: 1 / 5;
+}
+
+/* The sticky container.
+   top = header height + a little breathing room.
+   The element sticks within the height of its parent (.philosophy-left).
+   Once the parent's bottom edge scrolls past the sticky element,
+   it stops sticking and scrolls away with the parent. */
+.philosophy-sticky {
+  position:       sticky;
+  top:            calc(var(--header-height) + var(--space-8));
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-6);
+}
+
+/* Eyebrow + heading group */
+.philosophy-eyebrow {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-3);
+}
+
+.philosophy-heading {
+  font-size:      var(--text-3xl);
+  font-weight:    800;
+  letter-spacing: -0.025em;
+  line-height:    1.1;
+  color:          var(--text-dark-primary);
+}
+
+/* ---- Manifesto block ---- */
+.manifesto {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-3);
+  padding-top:    var(--space-5);
+  border-top:     1px solid var(--border-dark);
+}
+
+.manifesto-line {
+  font-size:   var(--text-lg);
+  font-weight: 600;
+  color:       var(--text-dark-primary);
+  line-height: 1.35;
+}
+
+/* Signal-orange accent bar: decorative, not animated to keep it subtle */
+.manifesto-rule {
+  width:         40px;
+  height:        2px;
+  background:    var(--accent);
+  border-radius: var(--radius-full);
+}
+
+/* Small note below the rule */
+.manifesto-note {
+  font-size:      var(--text-xs);
+  letter-spacing: 0.04em;
+  color:          var(--text-dark-muted);
+  line-height:    1.7;
+}
+
+/* ---- RIGHT COLUMN: cols 5–12 ---- */
+.philosophy-right {
+  grid-column: 5 / -1;
+  padding-top: var(--space-8);  /* align baseline with manifesto heading */
+}
+
+/* ---- Scroll-Illuminated Narrative Text ---- */
+/* Base paragraph styles. JS splits this into <span class="word"> elements. */
+.illuminated-text {
+  font-size:   var(--text-xl);
+  font-weight: 400;
+  line-height: 1.8;
+  color:       var(--text-dark-primary);
+  /* Inline word spans need the paragraph to wrap normally */
+  white-space: normal;
+}
+
+/* Individual word spans.
+   JS sets their opacity directly via element.style.opacity.
+   Initial value is 0.25 (dim) — JS illuminates to 1.0 on scroll.
+   No CSS transition here — requestAnimationFrame drives the updates
+   at 60fps, which is smoother than a CSS transition layered on top. */
+.word {
+  display: inline;
+  opacity: 0.25;
+}
+
+
+/* ================================================================
+   SECTION 13: KINETIC BRIDGE
+   Full-width dark row at the bottom of the philosophy section.
+   LOGIC  [animated SVG signal diagram]  EXECUTION
+================================================================ */
+
+.kinetic-bridge {
+  width:      100%;
+  border-top: 1px solid var(--border-dark);
+  padding:    var(--space-12) 0;
+  overflow:   hidden;
+}
+
+/* Inner row: label | SVG flex 1 | label */
+.kinetic-bridge-inner {
+  display:     flex;
+  align-items: center;
+  gap:         var(--space-6);
+}
+
+/* LOGIC / EXECUTION text labels */
+.kinetic-label {
+  font-size:      clamp(1.5rem, 3vw + 0.5rem, 3.5rem);
+  font-weight:    800;
+  letter-spacing: 0.08em;
+  color:          var(--text-dark-primary);
+  white-space:    nowrap;
+  flex-shrink:    0;
+  line-height:    1;
+}
+
+/* SVG diagram wrapper: takes all remaining space between labels */
+.kinetic-diagram {
+  flex:      1;
+  min-width: 0;   /* prevents flex child from overflowing its container */
+  color:     var(--text-dark-muted);
+}
+.kinetic-diagram svg {
+  width:    100%;
+  height:   auto;
+  display:  block;
+}
+
+/* ---- Kinetic Node SVG Circles ---- */
+/* transform-box: fill-box makes transform-origin relative to the
+   SVG element's own bounding box — without this, scale() would
+   scale from the SVG viewport origin (top-left corner), causing
+   circles to visually jump to wrong positions. */
+.knode {
+  transform-box:    fill-box;
+  transform-origin: center;
+}
+
+/* Sequential animation delays create the "signal traveling" illusion.
+   All animations use ONLY opacity + transform ✅ */
+.knode-1 { animation: node-pulse 3s 0.0s  ease-in-out infinite; }
+.knode-2 { animation: node-pulse 3s 0.55s ease-in-out infinite; }
+.knode-3 { animation: node-pulse 3s 1.1s  ease-in-out infinite; }
+.knode-4 { animation: node-pulse 3s 1.65s ease-in-out infinite; }
+.knode-5 { animation: node-pulse 3s 2.2s  ease-in-out infinite; }
+
+@keyframes node-pulse {
+  0%, 100% { opacity: 0.12; transform: scale(1);   }
+  45%, 55% { opacity: 1;    transform: scale(1.75); }
+}
+
+
+/* ================================================================
+   SECTION 14: PHILOSOPHY + KINETIC BRIDGE RESPONSIVE OVERRIDES
+================================================================ */
+
+/* --- MOBILE: < 768px — stack columns, no sticky --- */
+@media (max-width: 767.98px) {
+
+  .philosophy-grid {
+    grid-template-columns: 1fr;
+    gap:                   var(--space-10);
+    padding:               var(--space-16) var(--container-pad);
+  }
+
+  /* Remove grid column spans — both span full width */
+  .philosophy-left,
+  .philosophy-right { grid-column: 1 / -1; }
+
+  /* Disable sticky on mobile — there's no room to stick */
+  .philosophy-sticky {
+    position: static;
+    top:      auto;
+  }
+
+  /* Reduce headline on mobile */
+  .philosophy-heading { font-size: var(--text-2xl); }
+
+  /* Smaller narrative text on mobile */
+  .illuminated-text { font-size: var(--text-lg); }
+
+  /* Kinetic bridge: compress on mobile */
+  .kinetic-bridge { padding: var(--space-8) 0; }
+  .kinetic-label  { letter-spacing: 0.04em; }
+}
+
+/* --- TABLET: 768px – 1023px — two col, sticky active --- */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+
+  .philosophy-grid {
+    grid-template-columns: 1fr 2fr;
+  }
+  .philosophy-left  { grid-column: 1 / 2; }
+  .philosophy-right { grid-column: 2 / 3; }
 }
