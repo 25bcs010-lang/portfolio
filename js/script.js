@@ -648,24 +648,30 @@ if (certModal && certCloseBtn && modalImg && modalTitle && modalSubtitle) {
       modalFallback.style.display = 'flex';
     }
 
-    /* Test loading the certificate image */
+    /* Load the certificate image directly into modal image element */
     if (certSrc) {
-      const tester = new Image();
-      tester.onload = () => {
-        modalImg.src = certSrc;
+      modalImg.onload = () => {
         modalImg.classList.add('is-loaded');
         if (modalFallback) {
           modalFallback.style.display = 'none';
         }
       };
-      tester.onerror = () => {
-        /* Keep fallback placeholder visible */
+      modalImg.onerror = () => {
         modalImg.classList.remove('is-loaded');
         if (modalFallback) {
           modalFallback.style.display = 'flex';
         }
       };
-      tester.src = certSrc;
+      modalImg.src = certSrc;
+      modalImg.alt = certTitle;
+
+      /* If image is already cached by browser, immediately show it */
+      if (modalImg.complete && modalImg.naturalWidth > 0) {
+        modalImg.classList.add('is-loaded');
+        if (modalFallback) {
+          modalFallback.style.display = 'none';
+        }
+      }
     }
 
     /* Reveal modal dialog */
@@ -692,9 +698,15 @@ if (certModal && certCloseBtn && modalImg && modalTitle && modalSubtitle) {
     }
   }
 
-  /* Attach click listeners to all certificate preview buttons */
+  /* Attach click and keydown listeners to all certificate preview buttons/frames */
   certButtons.forEach(btn => {
     btn.addEventListener('click', () => openCertModal(btn));
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openCertModal(btn);
+      }
+    });
   });
 
   /* Close on close button click */
